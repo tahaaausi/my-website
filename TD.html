@@ -1,0 +1,2953 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TD | سیستم هوشمند پیشنهاد رشته تحصیلی</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #3a0ca3;
+      --primary-light: #5e35b1;
+      --secondary-color: #4361ee;
+      --secondary-light: #5c6bc0;
+      --accent-color: #f72585;
+      --accent-light: #ff4081;
+      --light-color: #f8f9fa;
+      --dark-color: #212529;
+      --success-color: #4cc9f0;
+      --success-light: #80deea;
+      --warning-color: #f8961e;
+      --warning-light: #ffb74d;
+      --danger-color: #ef233c;
+      --danger-light: #ff5252;
+      --info-color: #4895ef;
+      --info-light: #90caf9;
+      --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --box-shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.15);
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e6f0ff 100%);
+      color: var(--dark-color);
+      line-height: 1.6;
+      min-height: 100vh;
+      padding-bottom: 2rem;
+    }
+    
+    header {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+      box-shadow: var(--box-shadow-lg);
+      position: relative;
+      overflow: hidden;
+      border-bottom: 4px solid var(--accent-color);
+    }
+    
+    header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="rgba(255,255,255,0.05)" d="M0,0 L100,0 L100,100 L0,100 Z" /></svg>');
+      background-size: cover;
+    }
+    
+    .logo {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      letter-spacing: -1px;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .logo span {
+      color: var(--accent-light);
+      position: relative;
+    }
+    
+    .logo::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--accent-light);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.5s ease;
+    }
+    
+    .logo:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+    
+    .header-subtitle {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      max-width: 700px;
+      margin: 0.5rem auto 0;
+      position: relative;
+      line-height: 1.8;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+    
+    .progress-container {
+      width: 100%;
+      background-color: #e0e0e0;
+      border-radius: 10px;
+      margin: 1.5rem 0;
+      height: 12px;
+      position: relative;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .progress-bar {
+      height: 100%;
+      border-radius: 10px;
+      background: linear-gradient(90deg, var(--primary-light), var(--accent-light));
+      width: 0%;
+      transition: width 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .progress-bar::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      animation: progressShine 2s infinite;
+    }
+    
+    @keyframes progressShine {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    
+    .question-counter {
+      position: absolute;
+      top: -25px;
+      right: 0;
+      font-size: 0.9rem;
+      color: var(--dark-color);
+      font-weight: 500;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 0.2rem 0.8rem;
+      border-radius: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .question {
+      background-color: white;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      border-radius: 12px;
+      box-shadow: var(--box-shadow);
+      transform: translateY(0);
+      transition: var(--transition);
+      border-left: 5px solid var(--primary-color);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .question::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--primary-color), var(--accent-color));
+    }
+    
+    .question:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--box-shadow-lg);
+    }
+    
+    .question-title {
+      font-size: 1.3rem;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      color: var(--dark-color);
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+    
+    .question-title i {
+      margin-left: 0.8rem;
+      color: var(--primary-color);
+      font-size: 1.5rem;
+    }
+    
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .option {
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      border: 1px solid #e9ecef;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .option::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+      transition: var(--transition);
+    }
+    
+    .option:hover {
+      background-color: #e9ecef;
+      transform: translateX(8px);
+    }
+    
+    .option:hover::before {
+      left: 100%;
+    }
+    
+    .option input {
+      margin-left: 1rem;
+      transform: scale(1.3);
+      cursor: pointer;
+      accent-color: var(--primary-color);
+    }
+    
+    .option-label {
+      flex: 1;
+      font-size: 1.05rem;
+    }
+    
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+      gap: 1rem;
+    }
+    
+    button {
+      padding: 1rem 2rem;
+      font-size: 1.05rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: 'Vazirmatn', sans-serif;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    button::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      transition: var(--transition);
+    }
+    
+    button:hover::after {
+      left: 100%;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      box-shadow: 0 4px 15px rgba(67, 97, 238, 0.4);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(67, 97, 238, 0.5);
+    }
+    
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+    
+    .btn-primary:disabled {
+      background: #cccccc;
+      box-shadow: none;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .btn-outline {
+      background: transparent;
+      color: var(--primary-color);
+      border: 2px solid var(--primary-color);
+      position: relative;
+    }
+    
+    .btn-outline:hover {
+      background-color: rgba(67, 97, 238, 0.1);
+      box-shadow: 0 4px 10px rgba(67, 97, 238, 0.2);
+    }
+    
+    .btn-outline:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    
+    #result {
+      margin-top: 2rem;
+      background-color: white;
+      padding: 2.5rem;
+      border-radius: 15px;
+      box-shadow: var(--box-shadow-lg);
+      display: none;
+      animation: fadeIn 0.5s ease;
+      border-top: 5px solid var(--accent-color);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    #result::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 10px;
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color), var(--primary-color));
+      opacity: 0.2;
+    }
+    
+    .result-title {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+    }
+    
+    .result-title i {
+      margin-left: 1rem;
+      font-size: 2rem;
+    }
+    
+    .result-subtitle {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #555;
+      font-size: 1.1rem;
+    }
+    
+    .personality-type-container {
+      background: linear-gradient(135deg, var(--info-color), var(--success-color));
+      color: white;
+      padding: 2rem;
+      border-radius: 12px;
+      margin-bottom: 2.5rem;
+      text-align: center;
+      box-shadow: var(--box-shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .personality-type-container::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="rgba(255,255,255,0.1)" d="M0,0 L100,0 L100,100 L0,100 Z" /></svg>');
+      background-size: cover;
+    }
+    
+    .personality-type {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    
+    .personality-traits {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+    }
+    
+    .trait {
+      background-color: rgba(255, 255, 255, 0.2);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      backdrop-filter: blur(5px);
+    }
+    
+    .result-description {
+      line-height: 1.9;
+      margin-bottom: 2.5rem;
+      text-align: justify;
+      padding: 0 1rem;
+      font-size: 1.05rem;
+    }
+    
+    .courses-title {
+      font-size: 1.6rem;
+      margin: 3rem 0 2rem;
+      color: var(--primary-color);
+      text-align: center;
+      position: relative;
+      padding-bottom: 0.8rem;
+    }
+    
+    .courses-title::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 150px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+      border-radius: 3px;
+    }
+    
+    .courses-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    
+    .course-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--box-shadow);
+      transition: var(--transition);
+      border: 1px solid #e9ecef;
+      cursor: pointer;
+      position: relative;
+    }
+    
+    .course-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--box-shadow-lg);
+    }
+    
+    .course-card-header {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      padding: 1.5rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+    
+    .course-card-header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="rgba(255,255,255,0.1)" d="M0,0 L100,0 L100,100 L0,100 Z" /></svg>');
+      background-size: cover;
+    }
+    
+    .course-card-header i {
+      margin-left: 1rem;
+      font-size: 1.5rem;
+      position: relative;
+    }
+    
+    .course-card-body {
+      padding: 1.5rem;
+      min-height: 140px;
+    }
+    
+    .course-card-body p {
+      margin-bottom: 0;
+      line-height: 1.8;
+    }
+    
+    .course-card-footer {
+      padding: 1.2rem;
+      background-color: #f8f9fa;
+      border-top: 1px solid #e9ecef;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .course-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+    
+    .course-tag {
+      background: linear-gradient(135deg, var(--accent-color), var(--danger-color));
+      color: white;
+      padding: 0.4rem 0.9rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    
+    .course-detail-btn {
+      background: linear-gradient(135deg, var(--primary-color), var(--info-color));
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .course-detail-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3);
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    .error-message {
+      color: var(--danger-color);
+      font-size: 1rem;
+      margin-top: 0.8rem;
+      text-align: center;
+      display: none;
+      background-color: rgba(239, 35, 60, 0.1);
+      padding: 0.8rem;
+      border-radius: 8px;
+      border-right: 3px solid var(--danger-color);
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+      20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+    
+    .shake {
+      animation: shake 0.5s;
+    }
+    
+    /* Loading spinner */
+    .loader {
+      display: none;
+      text-align: center;
+      margin: 3rem 0;
+    }
+    
+    .spinner {
+      width: 70px;
+      height: 70px;
+      border: 8px solid #f3f3f3;
+      border-top: 8px solid var(--primary-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+      position: relative;
+    }
+    
+    .spinner::after {
+      content: "";
+      position: absolute;
+      top: -8px;
+      left: -8px;
+      right: -8px;
+      bottom: -8px;
+      border: 8px solid transparent;
+      border-top-color: var(--accent-color);
+      border-radius: 50%;
+      animation: spin 1.5s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .loader-text {
+      margin-top: 1.5rem;
+      font-size: 1.2rem;
+      color: var(--dark-color);
+      font-weight: 500;
+    }
+    
+    /* Modal styles */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+    }
+    
+    .modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .modal-content {
+      background: white;
+      width: 90%;
+      max-width: 700px;
+      max-height: 85vh;
+      border-radius: 15px;
+      padding: 2rem;
+      overflow-y: auto;
+      position: relative;
+      transform: translateY(-30px);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .modal.active .modal-content {
+      transform: translateY(0);
+    }
+    
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: var(--danger-color);
+      color: white;
+      border: none;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      transition: var(--transition);
+      z-index: 10;
+    }
+    
+    .close-modal:hover {
+      background: var(--danger-light);
+      transform: rotate(90deg);
+    }
+    
+    .modal-section {
+      margin-bottom: 1.8rem;
+    }
+    
+    .modal-section-title {
+      color: var(--primary-color);
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--accent-color);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    
+    .modal-section-title i {
+      font-size: 1.5rem;
+    }
+    
+    .university-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+    
+    .university-item {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+    
+    .skills-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+    
+    .skill-item {
+      background: #f5f5f5;
+      padding: 0.7rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      text-align: center;
+      border-left: 3px solid var(--accent-color);
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .logo {
+        font-size: 2rem;
+      }
+      
+      .header-subtitle {
+        font-size: 1rem;
+      }
+      
+      .courses-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .buttons {
+        flex-direction: column;
+      }
+      
+      button {
+        width: 100%;
+      }
+      
+      .question {
+        padding: 1.5rem;
+      }
+      
+      #result {
+        padding: 1.8rem;
+      }
+      
+      .modal-content {
+        width: 95%;
+        padding: 1.5rem;
+      }
+      
+      .skills-list {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .question-title {
+        font-size: 1.2rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+      
+      .question-title i {
+        margin-left: 0;
+      }
+      
+      .option {
+        padding: 0.8rem;
+      }
+      
+      .personality-type-container {
+        padding: 1.5rem;
+      }
+      
+      .result-title {
+        font-size: 1.5rem;
+      }
+    }
+    
+    /* Floating particles animation */
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+    
+    .particle {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      animation: float linear infinite;
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-1000px) rotate(720deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="particles" id="particles"></div>
+  
+  <header>
+    <div class="logo">TD <span>مشاور تحصیلی</span></div>
+    <p class="header-subtitle">سیستم هوشمند تشخیص رشته تحصیلی بر اساس تیپ شخصیتی و علایق</p>
+  </header>
+
+  <div class="container">
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar"></div>
+      <div class="question-counter" id="questionCounter">سوال 1 از 50</div>
+    </div>
+
+    <form id="quizForm">
+      <!-- سوالات به صورت پویا نمایش داده می‌شوند -->
+      <div id="questionsContainer"></div>
+
+      <div class="error-message" id="errorMessage">
+        <i class="fas fa-exclamation-circle"></i> لطفاً قبل از ادامه، به این سوال پاسخ دهید
+      </div>
+
+      <div class="buttons">
+        <button type="button" class="btn-outline" id="prevBtn" onclick="prevQuestion()" disabled>
+          <i class="fas fa-arrow-right"></i> سوال قبلی
+        </button>
+        <button type="button" class="btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>
+          سوال بعدی <i class="fas fa-arrow-left"></i>
+        </button>
+        <button type="button" class="btn-primary hidden" id="submitBtn" onclick="showResult()" disabled>
+          مشاهده نتایج <i class="fas fa-poll"></i>
+        </button>
+      </div>
+    </form>
+
+    <div class="loader" id="loader">
+      <div class="spinner"></div>
+      <p class="loader-text">در حال تحلیل پاسخ‌ها و یافتن بهترین رشته برای شما...</p>
+    </div>
+
+    <div id="result">
+      <h2 class="result-title"><i class="fas fa-award"></i> نتایج ارزیابی تحصیلی شما</h2>
+      <p class="result-subtitle">بر اساس پاسخ‌های شما به 50 سوال تخصصی</p>
+      
+      <div class="personality-type-container">
+        <div class="personality-type" id="personalityType"></div>
+        <div id="personalityDescription"></div>
+        <div class="personality-traits" id="personalityTraits"></div>
+      </div>
+      
+      <div class="result-description" id="resultDescription"></div>
+      
+      <h3 class="courses-title">پیشنهادهای ویژه TD برای شما</h3>
+      <div class="courses-container" id="coursesContainer"></div>
+      
+      <div style="text-align: center; margin-top: 3rem;">
+        <button type="button" class="btn-primary" style="padding: 1rem 2.5rem;" onclick="restartQuiz()">
+          <i class="fas fa-redo"></i> انجام دوباره تست
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for course details -->
+  <div class="modal" id="courseModal">
+    <div class="modal-content">
+      <button class="close-modal" onclick="closeModal()">
+        <i class="fas fa-times"></i>
+      </button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script>
+    // داده‌های سوالات تخصصی (50 سوال طراحی شده توسط کارشناسان مشاوره تحصیلی)
+    const questions = [
+      {
+        id: 1,
+        text: "در محیط‌های آموزشی، شما معمولاً چه نقشی دارید؟",
+        icon: "fas fa-user-graduate",
+        options: [
+          { value: "leader", text: "رهبر و سازمان‌دهنده گروه هستم", weight: { technical: 3, science: 2, social: 5, art: 1, medical: 2 } },
+          { value: "researcher", text: "به تحقیق و کشف عمیق موضوعات علاقه دارم", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 3 } },
+          { value: "creative", text: "ایده‌های خلاقانه ارائه می‌دهم", weight: { technical: 2, science: 1, social: 3, art: 5, medical: 1 } },
+          { value: "observer", text: "ترجیح می‌دهم مشاهده کنم و سپس عمل کنم", weight: { technical: 3, science: 4, social: 2, art: 2, medical: 4 } }
+        ]
+      },
+      {
+        id: 2,
+        text: "کدام یک از این فعالیت‌ها برای شما جذاب‌تر است؟",
+        icon: "fas fa-tasks",
+        options: [
+          { value: "solve_problems", text: "حل مسائل پیچیده ریاضی یا منطقی", weight: { technical: 5, science: 4, social: 1, art: 1, medical: 2 } },
+          { value: "help_others", text: "کمک به دیگران برای حل مشکلاتشان", weight: { technical: 1, science: 2, social: 5, art: 2, medical: 5 } },
+          { value: "create_art", text: "خالق آثار هنری یا ادبی بودن", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "analyze_data", text: "تحلیل داده‌ها و یافتن الگوها", weight: { technical: 4, science: 5, social: 2, art: 1, medical: 3 } }
+        ]
+      },
+      {
+        id: 3,
+        text: "در مواجهه با یک مشکل جدید، معمولاً چگونه عمل می‌کنید؟",
+        icon: "fas fa-question-circle",
+        options: [
+          { value: "systematic", text: "به صورت سیستماتیک و مرحله‌به‌مرحله پیش می‌روم", weight: { technical: 5, science: 4, social: 2, art: 1, medical: 3 } },
+          { value: "intuitive", text: "به شهود و الهامات درونی خود تکیه می‌کنم", weight: { technical: 1, science: 2, social: 3, art: 5, medical: 2 } },
+          { value: "collaborative", text: "با دیگران مشورت می‌کنم و نظر جمع را می‌پذیرم", weight: { technical: 2, science: 2, social: 5, art: 3, medical: 4 } },
+          { value: "experimental", text: "آزمایش و خطا می‌کنم تا راه حل را پیدا کنم", weight: { technical: 4, science: 5, social: 2, art: 2, medical: 4 } }
+        ]
+      },
+      {
+        id: 4,
+        text: "کدام نوع کتاب یا مطالب خواندنی را ترجیح می‌دهید؟",
+        icon: "fas fa-book-open",
+        options: [
+          { value: "scientific", text: "کتاب‌های علمی و تخصصی", weight: { technical: 4, science: 5, social: 1, art: 1, medical: 3 } },
+          { value: "novel", text: "رمان‌ها و داستان‌های ادبی", weight: { technical: 1, science: 1, social: 3, art: 5, medical: 1 } },
+          { value: "social", text: "مطالب اجتماعی و روانشناسی", weight: { technical: 1, science: 2, social: 5, art: 3, medical: 4 } },
+          { value: "technical", text: "کتاب‌های فنی و راهنمای عملی", weight: { technical: 5, science: 3, social: 1, art: 1, medical: 2 } }
+        ]
+      },
+      {
+        id: 5,
+        text: "در حل مسائل، بیشتر به کدام جنبه توجه دارید؟",
+        icon: "fas fa-lightbulb",
+        options: [
+          { value: "logic", text: "منطق و استدلال ریاضی", weight: { technical: 5, science: 4, social: 1, art: 1, medical: 2 } },
+          { value: "people", text: "تاثیر بر افراد و جامعه", weight: { technical: 1, science: 2, social: 5, art: 3, medical: 4 } },
+          { value: "aesthetics", text: "زیبایی‌شناسی و هارمونی", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "functionality", text: "کارایی و عملکرد عملی", weight: { technical: 5, science: 3, social: 2, art: 2, medical: 3 } }
+        ]
+      },
+      {
+        id: 6,
+        text: "کدام محیط کاری برای شما ایده‌آل است؟",
+        icon: "fas fa-briefcase",
+        options: [
+          { value: "lab", text: "آزمایشگاه مجهز", weight: { technical: 3, science: 5, social: 1, art: 1, medical: 4 } },
+          { value: "studio", text: "استودیوی طراحی یا هنری", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "office", text: "دفتر کار تیمی", weight: { technical: 2, science: 2, social: 5, art: 3, medical: 3 } },
+          { value: "field", text: "محیط‌های عملی و پروژه‌ای", weight: { technical: 5, science: 3, social: 2, art: 2, medical: 4 } }
+        ]
+      },
+      {
+        id: 7,
+        text: "در پروژه‌های گروهی، معمولاً چه نقشی بر عهده می‌گیرید؟",
+        icon: "fas fa-users",
+        options: [
+          { value: "coordinator", text: "هماهنگ‌کننده و مدیر پروژه", weight: { technical: 3, science: 2, social: 5, art: 2, medical: 3 } },
+          { value: "specialist", text: "متخصص فنی در یک حوزه خاص", weight: { technical: 5, science: 4, social: 1, art: 1, medical: 3 } },
+          { value: "designer", text: "طراح و ایده‌پرداز", weight: { technical: 2, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "researcher", text: "محقق و تحلیل‌گر داده‌ها", weight: { technical: 4, science: 5, social: 2, art: 1, medical: 3 } }
+        ]
+      },
+      {
+        id: 8,
+        text: "کدام یک از این مهارت‌ها در شما قوی‌تر است؟",
+        icon: "fas fa-star",
+        options: [
+          { value: "math", text: "محاسبات ریاضی و کمی", weight: { technical: 5, science: 4, social: 1, art: 1, medical: 2 } },
+          { value: "communication", text: "ارتباطات کلامی و نوشتاری", weight: { technical: 2, science: 2, social: 5, art: 4, medical: 3 } },
+          { value: "visual", text: "تجسم فضایی و طراحی", weight: { technical: 3, science: 2, social: 2, art: 5, medical: 1 } },
+          { value: "analysis", text: "تحلیل منطقی و انتقادی", weight: { technical: 4, science: 5, social: 3, art: 2, medical: 3 } }
+        ]
+      },
+      {
+        id: 9,
+        text: "در زمان آزاد، معمولاً چه فعالیتی انجام می‌دهید؟",
+        icon: "fas fa-clock",
+        options: [
+          { value: "read", text: "مطالعه کتاب‌های تخصصی", weight: { technical: 4, science: 5, social: 2, art: 1, medical: 3 } },
+          { value: "socialize", text: "معاشرت با دوستان و خانواده", weight: { technical: 1, science: 1, social: 5, art: 3, medical: 3 } },
+          { value: "create", text: "خالق آثار هنری یا دست‌سازه‌ها", weight: { technical: 2, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "experiment", text: "آزمایش ایده‌های جدید", weight: { technical: 5, science: 4, social: 1, art: 2, medical: 3 } }
+        ]
+      },
+      {
+        id: 10,
+        text: "کدام نوع چالش برای شما جذاب‌تر است؟",
+        icon: "fas fa-puzzle-piece",
+        options: [
+          { value: "technical", text: "چالش‌های فنی و مهندسی", weight: { technical: 5, science: 3, social: 1, art: 1, medical: 2 } },
+          { value: "human", text: "چالش‌های انسانی و اجتماعی", weight: { technical: 1, science: 2, social: 5, art: 3, medical: 4 } },
+          { value: "artistic", text: "چالش‌های خلاقانه و هنری", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "scientific", text: "چالش‌های علمی و پژوهشی", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 3 } }
+        ]
+      },
+      {
+        id: 11,
+        text: "در مواجهه با اطلاعات جدید، معمولاً چگونه عمل می‌کنید؟",
+        icon: "fas fa-info-circle",
+        options: [
+          { value: "organize", text: "دسته‌بندی و سیستماتیزه می‌کنم", weight: { technical: 5, science: 4, social: 2, art: 1, medical: 3 } },
+          { value: "discuss", text: "با دیگران به بحث و تبادل نظر می‌پردازم", weight: { technical: 2, science: 2, social: 5, art: 3, medical: 4 } },
+          { value: "visualize", text: "به صورت تصویری و نموداری در می‌آورم", weight: { technical: 3, science: 2, social: 2, art: 5, medical: 1 } },
+          { value: "experiment", text: "آزمایش می‌کنم تا صحت آن را بسنجم", weight: { technical: 4, science: 5, social: 2, art: 2, medical: 4 } }
+        ]
+      },
+      {
+        id: 12,
+        text: "کدام یک از این ارزش‌ها برای شما مهم‌تر است؟",
+        icon: "fas fa-heart",
+        options: [
+          { value: "innovation", text: "نوآوری و پیشرفت تکنولوژیک", weight: { technical: 5, science: 4, social: 2, art: 3, medical: 2 } },
+          { value: "harmony", text: "هماهنگی و زیبایی", weight: { technical: 1, science: 1, social: 3, art: 5, medical: 1 } },
+          { value: "justice", text: "عدالت و برابری اجتماعی", weight: { technical: 2, science: 2, social: 5, art: 3, medical: 3 } },
+          { value: "knowledge", text: "دانش و حقیقت علمی", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 3 } }
+        ]
+      },
+      {
+        id: 13,
+        text: "در یادگیری مطالب جدید، چه روشی برای شما موثرتر است؟",
+        icon: "fas fa-brain",
+        options: [
+          { value: "practice", text: "تمرین عملی و اجرا", weight: { technical: 5, science: 3, social: 2, art: 2, medical: 4 } },
+          { value: "discussion", text: "بحث و گفتگو با دیگران", weight: { technical: 2, science: 2, social: 5, art: 3, medical: 4 } },
+          { value: "visual", text: "دیدن تصاویر و نمودارها", weight: { technical: 3, science: 2, social: 2, art: 5, medical: 1 } },
+          { value: "research", text: "تحقیق و مطالعه عمیق", weight: { technical: 4, science: 5, social: 2, art: 1, medical: 3 } }
+        ]
+      },
+      {
+        id: 14,
+        text: "کدام یک از این مشاغل برای شما جذاب‌تر است؟",
+        icon: "fas fa-user-tie",
+        options: [
+          { value: "engineer", text: "مهندس سیستم‌های پیچیده", weight: { technical: 5, science: 3, social: 1, art: 1, medical: 2 } },
+          { value: "therapist", text: "مشاور یا رواندرمانگر", weight: { technical: 1, science: 2, social: 5, art: 2, medical: 4 } },
+          { value: "artist", text: "هنرمند یا طراح خلاق", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "scientist", text: "محقق و دانشمند", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 3 } }
+        ]
+      },
+      {
+        id: 15,
+        text: "در 10 سال آینده، دوست دارید چه دستاوردی داشته باشید؟",
+        icon: "fas fa-trophy",
+        options: [
+          { value: "invention", text: "اختراع یا نوآوری فنی", weight: { technical: 5, science: 4, social: 1, art: 1, medical: 2 } },
+          { value: "social_impact", text: "تاثیر مثبت بر جامعه", weight: { technical: 1, science: 2, social: 5, art: 3, medical: 4 } },
+          { value: "artistic", text: "خلق آثار هنری ماندگار", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "discovery", text: "کشف علمی جدید", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 3 } }
+        ]
+      },
+      {
+        id: 16,
+        text: "کدام یک از این موضوعات برای شما جذاب‌تر است؟",
+        icon: "fas fa-bookmark",
+        options: [
+          { value: "technology", text: "تکنولوژی و فناوری‌های جدید", weight: { technical: 5, science: 3, social: 1, art: 1, medical: 2 } },
+          { value: "human_behavior", text: "رفتار انسان و روابط اجتماعی", weight: { technical: 1, science: 2, social: 5, art: 3, medical: 4 } },
+          { value: "art_culture", text: "هنر و فرهنگ", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "nature_science", text: "طبیعت و علوم پایه", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 3 } }
+        ]
+      },
+      {
+        id: 17,
+        text: "در مواجهه با یک مسئله اخلاقی، چگونه تصمیم می‌گیرید؟",
+        icon: "fas fa-balance-scale",
+        options: [
+          { value: "rules", text: "بر اساس قوانین و مقررات موجود", weight: { technical: 4, science: 3, social: 3, art: 1, medical: 4 } },
+          { value: "feelings", text: "بر اساس احساسات و درک شخصی", weight: { technical: 1, science: 1, social: 4, art: 5, medical: 2 } },
+          { value: "discussion", text: "با مشورت و گفتگو با دیگران", weight: { technical: 2, science: 2, social: 5, art: 3, medical: 4 } },
+          { value: "consequences", text: "با تحلیل نتایج و پیامدهای احتمالی", weight: { technical: 4, science: 5, social: 3, art: 2, medical: 3 } }
+        ]
+      },
+      {
+        id: 18,
+        text: "کدام نوع کلاس درس را ترجیح می‌دهید؟",
+        icon: "fas fa-chalkboard",
+        options: [
+          { value: "lecture", text: "سخنرانی و ارائه مفاهیم نظری", weight: { technical: 3, science: 4, social: 2, art: 1, medical: 3 } },
+          { value: "workshop", text: "کارگاه عملی و آزمایشگاهی", weight: { technical: 5, science: 4, social: 2, art: 3, medical: 4 } },
+          { value: "discussion", text: "بحث گروهی و تبادل نظر", weight: { technical: 2, science: 2, social: 5, art: 3, medical: 4 } },
+          { value: "creative", text: "کلاس‌های خلاقانه و پروژه‌محور", weight: { technical: 3, science: 2, social: 3, art: 5, medical: 2 } }
+        ]
+      },
+      {
+        id: 19,
+        text: "در حل مسائل، معمولاً چه رویکردی دارید؟",
+        icon: "fas fa-cogs",
+        options: [
+          { value: "structured", text: "رویکرد ساختارمند و برنامه‌ریزی شده", weight: { technical: 5, science: 4, social: 2, art: 1, medical: 3 } },
+          { value: "flexible", text: "رویکرد انعطاف‌پذیر و سازگار", weight: { technical: 2, science: 2, social: 4, art: 5, medical: 3 } },
+          { value: "collaborative", text: "رویکرد مشارکتی و گروهی", weight: { technical: 2, science: 2, social: 5, art: 3, medical: 4 } },
+          { value: "innovative", text: "رویکرد نوآورانه و خارج از چارچوب", weight: { technical: 4, science: 3, social: 2, art: 5, medical: 2 } }
+        ]
+      },
+      {
+        id: 20,
+        text: "کدام یک از این ویژگی‌ها بیشتر درباره شما صدق می‌کند؟",
+        icon: "fas fa-user-check",
+        options: [
+          { value: "analytical", text: "تحلیلی و منطقی", weight: { technical: 5, science: 4, social: 2, art: 1, medical: 3 } },
+          { value: "compassionate", text: "دلسوز و حمایتگر", weight: { technical: 1, science: 2, social: 5, art: 3, medical: 5 } },
+          { value: "imaginative", text: "تخیلی و خلاق", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "curious", text: "کنجکاو و پژوهشگر", weight: { technical: 3, science: 5, social: 2, art: 2, medical: 3 } }
+        ]
+      },
+      {
+        id: 21,
+        text: "کدام یک از این فعالیت‌های تفریحی را ترجیح می‌دهید؟",
+        icon: "fas fa-gamepad",
+        options: [
+          { value: "puzzle_games", text: "بازی‌های فکری و پازل", weight: { technical: 4, science: 4, social: 2, art: 1, medical: 2 } },
+          { value: "team_sports", text: "ورزش‌های گروهی و تیمی", weight: { technical: 2, science: 2, social: 5, art: 2, medical: 3 } },
+          { value: "creative_arts", text: "فعالیت‌های هنری و خلاقانه", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "nature_exploration", text: "اکتشاف طبیعت و محیط زیست", weight: { technical: 3, science: 5, social: 2, art: 2, medical: 4 } }
+        ]
+      },
+      {
+        id: 22,
+        text: "در هنگام یادگیری یک موضوع جدید، چه چیزی برای شما مهم‌تر است؟",
+        icon: "fas fa-graduation-cap",
+        options: [
+          { value: "practical_application", text: "کاربرد عملی و فایده آن", weight: { technical: 5, science: 3, social: 2, art: 2, medical: 4 } },
+          { value: "social_impact", text: "تاثیر آن بر جامعه و روابط انسانی", weight: { technical: 1, science: 2, social: 5, art: 3, medical: 3 } },
+          { value: "aesthetic_value", text: "زیبایی‌شناسی و ارزش هنری آن", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "theoretical_depth", text: "عمق نظری و چارچوب مفهومی آن", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 3 } }
+        ]
+      },
+      {
+        id: 23,
+        text: "کدام یک از این موضوعات درسی در مدرسه برای شما جذاب‌تر بود؟",
+        icon: "fas fa-school",
+        options: [
+          { value: "math_physics", text: "ریاضیات و فیزیک", weight: { technical: 5, science: 4, social: 1, art: 1, medical: 2 } },
+          { value: "literature_arts", text: "ادبیات و هنر", weight: { technical: 1, science: 1, social: 3, art: 5, medical: 1 } },
+          { value: "social_studies", text: "مطالعات اجتماعی و روانشناسی", weight: { technical: 1, science: 2, social: 5, art: 3, medical: 3 } },
+          { value: "biology_chemistry", text: "زیست‌شناسی و شیمی", weight: { technical: 2, science: 5, social: 2, art: 1, medical: 5 } }
+        ]
+      },
+      {
+        id: 24,
+        text: "در هنگام خرید یک محصول جدید، معمولاً چه معیارهایی برای شما مهم‌تر است؟",
+        icon: "fas fa-shopping-cart",
+        options: [
+          { value: "technical_specs", text: "مشخصات فنی و عملکرد", weight: { technical: 5, science: 3, social: 1, art: 1, medical: 2 } },
+          { value: "social_reviews", text: "نظرات دیگران و محبوبیت", weight: { technical: 1, science: 1, social: 5, art: 2, medical: 2 } },
+          { value: "design_aesthetics", text: "طراحی و زیبایی ظاهری", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "scientific_evidence", text: "شواهد علمی و تحقیقات پشتیبان", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 4 } }
+        ]
+      },
+      {
+        id: 25,
+        text: "کدام یک از این مهارت‌ها را بیشتر دوست دارید بهبود دهید؟",
+        icon: "fas fa-chart-line",
+        options: [
+          { value: "technical_skills", text: "مهارت‌های فنی و تخصصی", weight: { technical: 5, science: 3, social: 1, art: 1, medical: 2 } },
+          { value: "social_skills", text: "مهارت‌های اجتماعی و ارتباطی", weight: { technical: 1, science: 1, social: 5, art: 3, medical: 3 } },
+          { value: "artistic_skills", text: "مهارت‌های هنری و خلاقانه", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "research_skills", text: "مهارت‌های تحقیقاتی و علمی", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 4 } }
+        ]
+      },
+      {
+        id: 26,
+        text: "در هنگام کار بر روی یک پروژه، معمولاً چه رویکردی دارید؟",
+        icon: "fas fa-project-diagram",
+        options: [
+          { value: "structured_plan", text: "برنامه‌ریزی ساختارمند و دقیق", weight: { technical: 5, science: 4, social: 2, art: 1, medical: 3 } },
+          { value: "team_collaboration", text: "همکاری تیمی و مشارکت جمعی", weight: { technical: 2, science: 2, social: 5, art: 3, medical: 4 } },
+          { value: "creative_exploration", text: "اکتشاف خلاقانه و آزمایش ایده‌ها", weight: { technical: 2, science: 2, social: 3, art: 5, medical: 2 } },
+          { value: "data_driven", text: "تحلیل داده‌ها و شواهد تجربی", weight: { technical: 4, science: 5, social: 2, art: 1, medical: 3 } }
+        ]
+      },
+      {
+        id: 27,
+        text: "کدام یک از این محیط‌های کاری را ترجیح می‌دهید؟",
+        icon: "fas fa-building",
+        options: [
+          { value: "tech_company", text: "شرکت فناوری و مهندسی", weight: { technical: 5, science: 3, social: 1, art: 1, medical: 1 } },
+          { value: "social_services", text: "سازمان‌های خدمات اجتماعی", weight: { technical: 1, science: 2, social: 5, art: 2, medical: 4 } },
+          { value: "creative_agency", text: "آژانس خلاق و طراحی", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "research_lab", text: "آزمایشگاه تحقیقاتی", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 4 } }
+        ]
+      },
+      {
+        id: 28,
+        text: "کدام یک از این دستاوردها برای شما ارزشمندتر است؟",
+        icon: "fas fa-medal",
+        options: [
+          { value: "technical_achievement", text: "دستاورد فنی و مهندسی", weight: { technical: 5, science: 3, social: 1, art: 1, medical: 2 } },
+          { value: "social_impact", text: "تاثیر مثبت بر زندگی دیگران", weight: { technical: 1, science: 2, social: 5, art: 3, medical: 4 } },
+          { value: "artistic_recognition", text: "تشخیص و تقدیر هنری", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "scientific_discovery", text: "کشف علمی جدید", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 3 } }
+        ]
+      },
+      {
+        id: 29,
+        text: "در هنگام تصمیم‌گیری، معمولاً به چه چیزی بیشتر توجه می‌کنید؟",
+        icon: "fas fa-decision",
+        options: [
+          { value: "logical_analysis", text: "تحلیل منطقی و داده‌ها", weight: { technical: 5, science: 4, social: 2, art: 1, medical: 3 } },
+          { value: "people_impact", text: "تاثیر بر افراد و روابط", weight: { technical: 1, science: 2, social: 5, art: 3, medical: 4 } },
+          { value: "creative_intuition", text: "شهود و الهام خلاقانه", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "evidence_based", text: "شواهد علمی و تحقیقات", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 4 } }
+        ]
+      },
+      {
+        id: 30,
+        text: "کدام یک از این فعالیت‌های داوطلبانه را ترجیح می‌دهید؟",
+        icon: "fas fa-hands-helping",
+        options: [
+          { value: "tech_mentoring", text: "مشاوره فنی و آموزش تکنولوژی", weight: { technical: 5, science: 3, social: 2, art: 1, medical: 1 } },
+          { value: "community_service", text: "خدمات اجتماعی و حمایت از جامعه", weight: { technical: 1, science: 2, social: 5, art: 2, medical: 4 } },
+          { value: "arts_volunteering", text: "فعالیت‌های هنری و فرهنگی", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "scientific_outreach", text: "تبلیغات علمی و آموزش عمومی", weight: { technical: 3, science: 5, social: 3, art: 1, medical: 3 } }
+        ]
+      },
+      {
+        id: 31,
+        text: "کدام یک از این سبک‌های یادگیری برای شما موثرتر است؟",
+        icon: "fas fa-book-reader",
+        options: [
+          { value: "hands_on", text: "آموزش عملی و تجربی", weight: { technical: 5, science: 3, social: 2, art: 2, medical: 4 } },
+          { value: "group_discussion", text: "بحث و گفتگوی گروهی", weight: { technical: 2, science: 2, social: 5, art: 3, medical: 3 } },
+          { value: "visual_arts", text: "آموزش بصری و هنری", weight: { technical: 2, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "research_based", text: "پژوهش و مطالعه مستقل", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 3 } }
+        ]
+      },
+      {
+        id: 32,
+        text: "کدام یک از این ویژگی‌های شغلی برای شما مهم‌تر است؟",
+        icon: "fas fa-briefcase",
+        options: [
+          { value: "technical_challenge", text: "چالش‌های فنی و حل مسئله", weight: { technical: 5, science: 3, social: 1, art: 1, medical: 2 } },
+          { value: "social_interaction", text: "تعامل اجتماعی و کمک به دیگران", weight: { technical: 1, science: 2, social: 5, art: 3, medical: 4 } },
+          { value: "creative_freedom", text: "آزادی خلاقانه و بیان شخصی", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "scientific_inquiry", text: "پرسش‌های علمی و تحقیقاتی", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 3 } }
+        ]
+      },
+      {
+        id: 33,
+        text: "در مواجهه با یک مشکل پیچیده، اولین کاری که می‌کنید چیست؟",
+        icon: "fas fa-question",
+        options: [
+          { value: "break_down", text: "مسئله را به بخش‌های کوچک‌تر تقسیم می‌کنم", weight: { technical: 5, science: 4, social: 2, art: 1, medical: 3 } },
+          { value: "ask_others", text: "با دیگران مشورت می‌کنم و نظر می‌پرسم", weight: { technical: 2, science: 2, social: 5, art: 3, medical: 4 } },
+          { value: "brainstorm", text: "بارش فکری و تولید ایده‌های خلاقانه انجام می‌دهم", weight: { technical: 2, science: 2, social: 3, art: 5, medical: 2 } },
+          { value: "research", text: "تحقیق می‌کنم و اطلاعات جمع‌آوری می‌کنم", weight: { technical: 4, science: 5, social: 2, art: 1, medical: 3 } }
+        ]
+      },
+      {
+        id: 34,
+        text: "کدام یک از این موضوعات خبری بیشتر توجه شما را جلب می‌کند؟",
+        icon: "fas fa-newspaper",
+        options: [
+          { value: "tech_news", text: "اخبار فناوری و تکنولوژی", weight: { technical: 5, science: 3, social: 1, art: 1, medical: 1 } },
+          { value: "social_issues", text: "مسائل اجتماعی و انسانی", weight: { technical: 1, science: 2, social: 5, art: 3, medical: 3 } },
+          { value: "arts_culture", text: "اخبار هنر و فرهنگ", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "scientific_discoveries", text: "اکتشافات علمی و پزشکی", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 4 } }
+        ]
+      },
+      {
+        id: 35,
+        text: "کدام یک از این فعالیت‌های فوق‌برنامه را بیشتر دوست دارید؟",
+        icon: "fas fa-running",
+        options: [
+          { value: "coding_club", text: "کلوب برنامه‌نویسی و رباتیک", weight: { technical: 5, science: 3, social: 1, art: 1, medical: 1 } },
+          { value: "debate_team", text: "تیم مناظره و بحث عمومی", weight: { technical: 2, science: 2, social: 5, art: 2, medical: 2 } },
+          { value: "art_club", text: "کلوب هنری و خلاقیت", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "science_olympiad", text: "المپیادهای علمی و پژوهشی", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 3 } }
+        ]
+      },
+      {
+        id: 36,
+        text: "کدام یک از این روش‌های ارائه اطلاعات را ترجیح می‌دهید؟",
+        icon: "fas fa-chart-pie",
+        options: [
+          { value: "technical_diagrams", text: "نمودارهای فنی و مهندسی", weight: { technical: 5, science: 3, social: 1, art: 1, medical: 2 } },
+          { value: "group_discussion", text: "بحث گروهی و تعاملی", weight: { technical: 2, science: 2, social: 5, art: 3, medical: 3 } },
+          { value: "visual_arts", text: "ارائه بصری و هنری", weight: { technical: 2, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "data_analysis", text: "تحلیل داده‌ها و آمار", weight: { technical: 4, science: 5, social: 2, art: 1, medical: 3 } }
+        ]
+      },
+      {
+        id: 37,
+        text: "کدام یک از این ویژگی‌های محیط کار برای شما مهم‌تر است؟",
+        icon: "fas fa-office-building",
+        options: [
+          { value: "advanced_tech", text: "دسترسی به تکنولوژی پیشرفته", weight: { technical: 5, science: 3, social: 1, art: 1, medical: 2 } },
+          { value: "friendly_colleagues", text: "همکاران دوست‌داشتنی و حمایتگر", weight: { technical: 2, science: 2, social: 5, art: 3, medical: 3 } },
+          { value: "creative_atmosphere", text: "فضای خلاقانه و الهام‌بخش", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "research_facilities", text: "امکانات تحقیقاتی و آزمایشگاهی", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 4 } }
+        ]
+      },
+      {
+        id: 38,
+        text: "کدام یک از این نوع پروژه‌ها را ترجیح می‌دهید؟",
+        icon: "fas fa-tasks",
+        options: [
+          { value: "technical_project", text: "پروژه فنی و مهندسی", weight: { technical: 5, science: 3, social: 1, art: 1, medical: 2 } },
+          { value: "community_project", text: "پروژه اجتماعی و خدماتی", weight: { technical: 1, science: 2, social: 5, art: 2, medical: 4 } },
+          { value: "creative_project", text: "پروژه هنری و خلاقانه", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "research_project", text: "پروژه تحقیقاتی و علمی", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 4 } }
+        ]
+      },
+      {
+        id: 39,
+        text: "کدام یک از این نوع سخنرانی‌ها را ترجیح می‌دهید؟",
+        icon: "fas fa-microphone",
+        options: [
+          { value: "tech_talk", text: "سخنرانی فنی و مهندسی", weight: { technical: 5, science: 3, social: 1, art: 1, medical: 2 } },
+          { value: "social_issues", text: "سخنرانی درباره مسائل اجتماعی", weight: { technical: 1, science: 2, social: 5, art: 3, medical: 3 } },
+          { value: "artistic_lecture", text: "سخنرانی هنری و زیبایی‌شناسی", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "scientific_presentation", text: "ارائه علمی و تحقیقاتی", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 4 } }
+        ]
+      },
+      {
+        id: 40,
+        text: "کدام یک از این نوع معلمان را ترجیح می‌دهید؟",
+        icon: "fas fa-chalkboard-teacher",
+        options: [
+          { value: "technical_expert", text: "متخصص فنی با دانش عمیق", weight: { technical: 5, science: 3, social: 1, art: 1, medical: 2 } },
+          { value: "engaging_communicator", text: "ارتباط‌گرای جذاب و مردمی", weight: { technical: 2, science: 2, social: 5, art: 3, medical: 3 } },
+          { value: "creative_thinker", text: "متفکر خلاق و الهام‌بخش", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "research_scholar", text: "محقق دقیق و دانشمند", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 4 } }
+        ]
+      },
+      {
+        id: 41,
+        text: "کدام یک از این نوع یادگیری را ترجیح می‌دهید؟",
+        icon: "fas fa-graduation-cap",
+        options: [
+          { value: "hands_on_learning", text: "یادگیری عملی و تجربی", weight: { technical: 5, science: 3, social: 2, art: 2, medical: 4 } },
+          { value: "group_learning", text: "یادگیری گروهی و تعاملی", weight: { technical: 2, science: 2, social: 5, art: 3, medical: 3 } },
+          { value: "visual_learning", text: "یادگیری بصری و خلاقانه", weight: { technical: 2, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "independent_research", text: "پژوهش مستقل و مطالعه عمیق", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 3 } }
+        ]
+      },
+      {
+        id: 42,
+        text: "کدام یک از این نوع مسابقات را ترجیح می‌دهید؟",
+        icon: "fas fa-trophy",
+        options: [
+          { value: "hackathon", text: "مسابقات برنامه‌نویسی و هکاتون", weight: { technical: 5, science: 3, social: 1, art: 1, medical: 1 } },
+          { value: "debate_competition", text: "مسابقات مناظره و سخنوری", weight: { technical: 2, science: 2, social: 5, art: 3, medical: 2 } },
+          { value: "art_contest", text: "مسابقات هنری و خلاقیت", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "science_fair", text: "نمایشگاه‌های علمی و پژوهشی", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 3 } }
+        ]
+      },
+      {
+        id: 43,
+        text: "کدام یک از این نوع شبکه‌های اجتماعی را بیشتر استفاده می‌کنید؟",
+        icon: "fas fa-hashtag",
+        options: [
+          { value: "tech_platforms", text: "پلتفرم‌های فنی مانند GitHub", weight: { technical: 5, science: 3, social: 1, art: 1, medical: 1 } },
+          { value: "social_networks", text: "شبکه‌های اجتماعی عمومی", weight: { technical: 2, science: 2, social: 5, art: 3, medical: 3 } },
+          { value: "visual_platforms", text: "پلتفرم‌های بصری مانند Instagram", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "academic_networks", text: "شبکه‌های علمی و پژوهشی", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 3 } }
+        ]
+      },
+      {
+        id: 44,
+        text: "کدام یک از این نوع وبسایت‌ها را بیشتر مرور می‌کنید؟",
+        icon: "fas fa-globe",
+        options: [
+          { value: "tech_news", text: "سایت‌های خبری فناوری", weight: { technical: 5, science: 3, social: 1, art: 1, medical: 1 } },
+          { value: "social_issues", text: "سایت‌های مسائل اجتماعی", weight: { technical: 1, science: 2, social: 5, art: 3, medical: 3 } },
+          { value: "art_design", text: "سایت‌های هنری و طراحی", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "science_journals", text: "مجلات علمی و پژوهشی", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 4 } }
+        ]
+      },
+      {
+        id: 45,
+        text: "کدام یک از این نوع مستندها را ترجیح می‌دهید؟",
+        icon: "fas fa-film",
+        options: [
+          { value: "technology_docs", text: "مستندهای فناوری و اختراعات", weight: { technical: 5, science: 3, social: 1, art: 1, medical: 1 } },
+          { value: "human_stories", text: "مستندهای داستان‌های انسانی", weight: { technical: 1, science: 2, social: 5, art: 3, medical: 3 } },
+          { value: "artistic_films", text: "مستندهای هنری و زیبایی‌شناسی", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "scientific_exploration", text: "مستندهای اکتشافات علمی", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 4 } }
+        ]
+      },
+      {
+        id: 46,
+        text: "کدام یک از این نوع بازی‌ها را ترجیح می‌دهید؟",
+        icon: "fas fa-gamepad",
+        options: [
+          { value: "strategy_games", text: "بازی‌های استراتژیک و فکری", weight: { technical: 5, science: 4, social: 2, art: 1, medical: 2 } },
+          { value: "social_games", text: "بازی‌های گروهی و اجتماعی", weight: { technical: 2, science: 2, social: 5, art: 3, medical: 3 } },
+          { value: "creative_games", text: "بازی‌های خلاقانه و هنری", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "simulation_games", text: "بازی‌های شبیه‌سازی علمی", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 3 } }
+        ]
+      },
+      {
+        id: 47,
+        text: "کدام یک از این نوع موسیقی را ترجیح می‌دهید؟",
+        icon: "fas fa-music",
+        options: [
+          { value: "electronic_music", text: "موسیقی الکترونیک و تکنو", weight: { technical: 5, science: 3, social: 2, art: 3, medical: 1 } },
+          { value: "folk_music", text: "موسیقی فولکلور و محلی", weight: { technical: 1, science: 2, social: 5, art: 4, medical: 2 } },
+          { value: "classical_music", text: "موسیقی کلاسیک و هنری", weight: { technical: 2, science: 2, social: 3, art: 5, medical: 1 } },
+          { value: "ambient_music", text: "موسیقی امبینت و علمی-تخیلی", weight: { technical: 3, science: 5, social: 2, art: 3, medical: 2 } }
+        ]
+      },
+      {
+        id: 48,
+        text: "کدام یک از این نوع رویدادها را ترجیح می‌دهید؟",
+        icon: "fas fa-calendar-alt",
+        options: [
+          { value: "tech_conference", text: "کنفرانس‌های فناوری", weight: { technical: 5, science: 3, social: 2, art: 1, medical: 1 } },
+          { value: "social_gathering", text: "گردهمایی‌های اجتماعی", weight: { technical: 1, science: 2, social: 5, art: 3, medical: 3 } },
+          { value: "art_exhibition", text: "نمایشگاه‌های هنری", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "science_symposium", text: "سمینارهای علمی", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 4 } }
+        ]
+      },
+      {
+        id: 49,
+        text: "کدام یک از این نوع کتاب‌های غیردرسی را ترجیح می‌دهید؟",
+        icon: "fas fa-book",
+        options: [
+          { value: "tech_books", text: "کتاب‌های فناوری و آینده‌نگر", weight: { technical: 5, science: 3, social: 1, art: 1, medical: 1 } },
+          { value: "social_sciences", text: "کتاب‌های علوم اجتماعی", weight: { technical: 1, science: 2, social: 5, art: 3, medical: 3 } },
+          { value: "art_literature", text: "کتاب‌های ادبی و هنری", weight: { technical: 1, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "scientific_literature", text: "کتاب‌های علمی و پژوهشی", weight: { technical: 3, science: 5, social: 2, art: 1, medical: 4 } }
+        ]
+      },
+      {
+        id: 50,
+        text: "کدام یک از این نوع مهارت‌های جدید را دوست دارید یاد بگیرید؟",
+        icon: "fas fa-lightbulb",
+        options: [
+          { value: "programming", text: "برنامه‌نویسی و توسعه نرم‌افزار", weight: { technical: 5, science: 3, social: 1, art: 1, medical: 1 } },
+          { value: "counseling", text: "مشاوره و مهارت‌های ارتباطی", weight: { technical: 1, science: 2, social: 5, art: 3, medical: 4 } },
+          { value: "graphic_design", text: "طراحی گرافیک و هنر دیجیتال", weight: { technical: 2, science: 1, social: 2, art: 5, medical: 1 } },
+          { value: "data_science", text: "علم داده و تحلیل آماری", weight: { technical: 4, science: 5, social: 2, art: 1, medical: 3 } }
+        ]
+      }
+    ];
+
+    // داده‌های کامل رشته‌های تحصیلی با تمام گرایش‌ها و جزئیات
+    const courses = {
+      technical: [
+        {
+          id: "computer_engineering",
+          title: "مهندسی کامپیوتر",
+          description: "رشته مهندسی کامپیوتر به طراحی و توسعه سیستم‌های کامپیوتری می‌پردازد. این رشته شامل گرایش‌های نرم‌افزار، سخت‌افزار، هوش مصنوعی و شبکه‌های کامپیوتری است. دانشجویان این رشته با مفاهیم برنامه‌نویسی، طراحی الگوریتم‌ها، معماری کامپیوتر و شبکه‌های ارتباطی آشنا می‌شوند.",
+          tags: ["فناوری", "پردرآمد", "پیشرفته"],
+          icon: "fas fa-laptop-code",
+          personalityMatch: ["تحلیلی", "منطقی", "مسئله‌گشا", "دقیق", "ساختارمند"],
+          jobProspects: "شرکت‌های نرم‌افزاری، استارتاپ‌های فناوری، بخش IT سازمان‌ها، مراکز تحقیقاتی، بانک‌ها و مؤسسات مالی، شرکت‌های مخابراتی، صنایع دفاعی و امنیتی",
+          salary: "متوسط درآمد ابتدایی: 10-15 میلیون تومان | با تجربه: 20-60 میلیون تومان | در شرکت‌های بین‌المللی: معادل 50-150 هزار دلار سالانه",
+          branches: [
+            "نرم‌افزار",
+            "سخت‌افزار",
+            "هوش مصنوعی",
+            "شبکه‌های کامپیوتری",
+            "امنیت اطلاعات",
+            "مهندسی داده",
+            "رایانش ابری",
+            "اینترنت اشیا"
+          ],
+          skills: [
+            "برنامه‌نویسی",
+            "الگوریتم‌ها",
+            "پایگاه داده",
+            "شبکه‌های کامپیوتری",
+            "هوش مصنوعی",
+            "یادگیری ماشین",
+            "امنیت سایبری",
+            "توسعه وب"
+          ],
+          topUniversities: [
+            "دانشگاه صنعتی شریف",
+            "دانشگاه تهران",
+            "دانشگاه امیرکبیر",
+            "دانشگاه صنعتی اصفهان",
+            "دانشگاه علم و صنعت ایران",
+            "دانشگاه فردوسی مشهد",
+            "دانشگاه صنعتی خواجه نصیر"
+          ]
+        },
+        {
+          id: "electrical_engineering",
+          title: "مهندسی برق",
+          description: "مهندسی برق به مطالعه و کاربرد الکتریسیته، الکترونیک و الکترومغناطیس می‌پردازد. این رشته پایه‌ای برای بسیاری از فناوری‌های مدرن است و نقش حیاتی در صنایع مختلف دارد. مهندسان برق در طراحی، توسعه و نگهداری سیستم‌های الکترونیکی و الکتریکی فعالیت می‌کنند.",
+          tags: ["صنعتی", "تخصصی", "پیشرفته"],
+          icon: "fas fa-bolt",
+          personalityMatch: ["تحلیلی", "دقیق", "فنی", "مسئله‌گشا", "جزء‌نگر"],
+          jobProspects: "شرکت‌های تولیدی، صنایع نفت و گاز، شرکت‌های مخابراتی، مراکز تحقیقاتی، سازمان‌های انرژی، شرکت‌های خودروسازی، صنایع دفاعی، شرکت‌های مشاوره مهندسی",
+          salary: "متوسط درآمد ابتدایی: 8-12 میلیون تومان | با تجربه: 15-40 میلیون تومان | در صنایع خاص: تا 60 میلیون تومان",
+          branches: [
+            "الکترونیک",
+            "قدرت",
+            "مخابرات",
+            "کنترل",
+            "مهندسی پزشکی",
+            "میکروالکترونیک",
+            "انرژی‌های تجدیدپذیر",
+            "اتوماسیون صنعتی"
+          ],
+          skills: [
+            "مدارهای الکتریکی",
+            "الکترونیک دیجیتال و آنالوگ",
+            "مخابرات",
+            "کنترل سیستم‌ها",
+            "پردازش سیگنال",
+            "برنامه‌نویسی صنعتی",
+            "طراحی سیستم‌های قدرت",
+            "آزمایشگاه‌های تخصصی"
+          ],
+          topUniversities: [
+            "دانشگاه صنعتی شریف",
+            "دانشگاه تهران",
+            "دانشگاه امیرکبیر",
+            "دانشگاه صنعتی اصفهان",
+            "دانشگاه علم و صنعت ایران",
+            "دانشگاه خواجه نصیرالدین طوسی",
+            "دانشگاه صنعتی شیراز"
+          ]
+        },
+        {
+          id: "civil_engineering",
+          title: "مهندسی عمران",
+          description: "مهندسی عمران به طراحی، ساخت و نگهداری سازه‌ها و زیرساخت‌های فیزیکی مانند ساختمان‌ها، پل‌ها، جاده‌ها و سیستم‌های آبی می‌پردازد. این رشته نیازمند درک خوبی از فیزیک، ریاضیات و مدیریت پروژه است و نقش کلیدی در توسعه شهری و روستایی دارد.",
+          tags: ["ساخت‌وساز", "کاربردی", "پروژه‌محور"],
+          icon: "fas fa-building",
+          personalityMatch: ["دقیق", "مسئله‌گشا", "عملی‌گرا", "سازمان‌یافته", "جزء‌نگر"],
+          jobProspects: "شرکت‌های ساختمانی، مهندسین مشاور، سازمان‌های دولتی، پیمانکاران، شهرداری‌ها، وزارت راه و شهرسازی، شرکت‌های نفت و گاز، شرکت‌های مشاوره بین‌المللی",
+          salary: "متوسط درآمد ابتدایی: 7-10 میلیون تومان | با تجربه: 15-35 میلیون تومان | در پروژه‌های بزرگ: تا 50 میلیون تومان",
+          branches: [
+            "سازه",
+            "زلزله",
+            "ژئوتکنیک",
+            "راه و ترابری",
+            "آب و سازه‌های هیدرولیکی",
+            "مدیریت ساخت",
+            "مهندسی محیط زیست",
+            "مهندسی حمل و نقل"
+          ],
+          skills: [
+            "طراحی سازه‌ها",
+            "نرم‌افزارهای مهندسی",
+            "مدیریت پروژه",
+            "مصالح ساختمانی",
+            "ژئوتکنیک",
+            "هیدرولیک",
+            "راه‌سازی",
+            "ارزیابی اثرات محیط زیستی"
+          ],
+          topUniversities: [
+            "دانشگاه تهران",
+            "دانشگاه صنعتی شریف",
+            "دانشگاه امیرکبیر",
+            "دانشگاه علم و صنعت ایران",
+            "دانشگاه صنعتی اصفهان",
+            "دانشگاه تربیت مدرس",
+            "دانشگاه خواجه نصیرالدین طوسی"
+          ]
+        },
+        {
+          id: "mechanical_engineering",
+          title: "مهندسی مکانیک",
+          description: "مهندسی مکانیک به طراحی، تحلیل، ساخت و نگهداری سیستم‌های مکانیکی می‌پردازد. این رشته یکی از گسترده‌ترین رشته‌های مهندسی است و کاربردهای وسیعی در صنایع مختلف دارد. مهندسان مکانیک در طراحی ماشین‌آلات، سیستم‌های حرارتی و سیالاتی و رباتیک فعالیت می‌کنند.",
+          tags: ["صنعتی", "مکانیکی", "طراحی"],
+          icon: "fas fa-cogs",
+          personalityMatch: ["تحلیلی", "خلاق", "مسئله‌گشا", "دقیق", "عملی‌گرا"],
+          jobProspects: "صنایع خودروسازی، هوافضا، نفت و گاز، تولید انرژی، شرکت‌های تولیدی، صنایع دفاعی، شرکت‌های مشاوره مهندسی، مراکز تحقیقاتی",
+          salary: "متوسط درآمد ابتدایی: 8-12 میلیون تومان | با تجربه: 15-40 میلیون تومان | در صنایع خاص: تا 60 میلیون تومان",
+          branches: [
+            "طراحی جامدات",
+            "حرارت و سیالات",
+            "ساخت و تولید",
+            "مهندسی دریا",
+            "هوافضا",
+            "مکاترونیک",
+            "انرژی",
+            "بیومکانیک"
+          ],
+          skills: [
+            "طراحی مکانیکی",
+            "نرم‌افزارهای CAD/CAM",
+            "ترمودینامیک",
+            "مکانیک سیالات",
+            "دینامیک ماشین",
+            "کنترل اتوماتیک",
+            "روش‌های تولید",
+            "مکانیک مواد"
+          ],
+          topUniversities: [
+            "دانشگاه صنعتی شریف",
+            "دانشگاه تهران",
+            "دانشگاه امیرکبیر",
+            "دانشگاه علم و صنعت ایران",
+            "دانشگاه صنعتی اصفهان",
+            "دانشگاه خواجه نصیرالدین طوسی",
+            "دانشگاه صنعتی شیراز"
+          ]
+        },
+        {
+          id: "industrial_engineering",
+          title: "مهندسی صنایع",
+          description: "مهندسی صنایع به بهینه‌سازی سیستم‌های پیچیده انسانی، ماشینی، اطلاعاتی و مالی می‌پردازد. این رشته ترکیبی از مهندسی و مدیریت است و هدف آن افزایش بهره‌وری و کاهش هزینه‌ها در سازمان‌ها و صنایع مختلف است.",
+          tags: ["مدیریتی", "بهینه‌سازی", "چندرشته‌ای"],
+          icon: "fas fa-industry",
+          personalityMatch: ["تحلیلی", "سیستماتیک", "مسئله‌گشا", "ارتباط‌گرا", "سازمان‌یافته"],
+          jobProspects: "شرکت‌های تولیدی، صنایع خودروسازی، بیمارستان‌ها، شرکت‌های لجستیک، سازمان‌های خدماتی، شرکت‌های مشاوره مدیریت، بانک‌ها و مؤسسات مالی",
+          salary: "متوسط درآمد ابتدایی: 8-12 میلیون تومان | با تجربه: 15-40 میلیون تومان | در پست‌های مدیریتی: تا 60 میلیون تومان",
+          branches: [
+            "مدیریت سیستم و بهره‌وری",
+            "مهندسی مالی",
+            "مهندسی لجستیک و زنجیره تأمین",
+            "مهندسی کیفیت",
+            "مهندسی سیستم‌های سلامت",
+            "مهندسی ایمنی",
+            "مهندسی سیستم‌های اطلاعاتی",
+            "مهندسی سیستم‌های کلان"
+          ],
+          skills: [
+            "مدیریت عملیات",
+            "بهینه‌سازی",
+            "آمار و احتمالات",
+            "شبیه‌سازی سیستم‌ها",
+            "مدیریت پروژه",
+            "کنترل کیفیت",
+            "زنجیره تأمین",
+            "اقتصاد مهندسی"
+          ],
+          topUniversities: [
+            "دانشگاه صنعتی شریف",
+            "دانشگاه تهران",
+            "دانشگاه امیرکبیر",
+            "دانشگاه علم و صنعت ایران",
+            "دانشگاه صنعتی اصفهان",
+            "دانشگاه تربیت مدرس",
+            "دانشگاه خواجه نصیرالدین طوسی"
+          ]
+        }
+      ],
+      science: [
+        {
+          id: "physics",
+          title: "فیزیک",
+          description: "رشته فیزیک به مطالعه ماده، انرژی و برهمکنش بین آن‌ها می‌پردازد. این رشته پایه‌ای برای بسیاری از علوم دیگر است و شامل گرایش‌های نظری، تجربی و کاربردی می‌شود. فیزیکدانان به دنبال درک قوانین بنیادی حاکم بر جهان هستند.",
+          tags: ["پایه‌ای", "تحقیقاتی", "نظری"],
+          icon: "fas fa-atom",
+          personalityMatch: ["کنجکاو", "تحلیلی", "صابر", "منطقی", "جزء‌نگر"],
+          jobProspects: "مراکز تحقیقاتی، دانشگاه‌ها، صنایع پیشرفته، سازمان‌های فضایی، شرکت‌های فناوری، آزمایشگاه‌های ملی، مراکز پزشکی هسته‌ای",
+          salary: "متوسط درآمد ابتدایی: 7-10 میلیون تومان | با تجربه: 15-30 میلیون تومان | در صنایع خاص: تا 50 میلیون تومان",
+          branches: [
+            "فیزیک نظری",
+            "فیزیک هسته‌ای",
+            "فیزیک حالت جامد",
+            "اخترفیزیک",
+            "فیزیک پزشکی",
+            "فیزیک پلاسما",
+            "فیزیک ذرات بنیادی",
+            "فیزیک نجوم"
+          ],
+          skills: [
+            "ریاضیات پیشرفته",
+            "مکانیک کوانتومی",
+            "الکترومغناطیس",
+            "ترمودینامیک",
+            "آزمایشگاه‌های فیزیک",
+            "شبیه‌سازی کامپیوتری",
+            "تحلیل داده",
+            "روش‌های محاسباتی"
+          ],
+          topUniversities: [
+            "دانشگاه صنعتی شریف",
+            "دانشگاه تهران",
+            "دانشگاه امیرکبیر",
+            "دانشگاه صنعتی اصفهان",
+            "دانشگاه فردوسی مشهد",
+            "دانشگاه تحصیلات تکمیلی علوم پایه زنجان",
+            "دانشگاه صنعتی شیراز"
+          ]
+        },
+        {
+          id: "chemistry",
+          title: "شیمی",
+          description: "رشته شیمی به مطالعه ترکیب، ساختار، خواص و تغییرات مواد می‌پردازد. این رشته شامل گرایش‌های مختلفی است که هر کدام به جنبه‌های خاصی از علم شیمی می‌پردازند. شیمی نقش اساسی در توسعه داروها، مواد جدید و فناوری‌های نوین دارد.",
+          tags: ["آزمایشگاهی", "دقیق", "کاربردی"],
+          icon: "fas fa-flask",
+          personalityMatch: ["دقیق", "صبور", "تحلیلی", "منظم", "کنجکاو"],
+          jobProspects: "صنایع شیمیایی، داروسازی، آزمایشگاه‌ها، مراکز تحقیقاتی، صنایع غذایی، صنایع پتروشیمی، شرکت‌های مواد شوینده و آرایشی، سازمان‌های محیط زیستی",
+          salary: "متوسط درآمد ابتدایی: 6-9 میلیون تومان | با تجربه: 12-25 میلیون تومان | در صنایع خاص: تا 40 میلیون تومان",
+          branches: [
+            "شیمی آلی",
+            "شیمی معدنی",
+            "شیمی تجزیه",
+            "شیمی فیزیک",
+            "شیمی کاربردی",
+            "شیمی پلیمر",
+            "شیمی دارویی",
+            "نانوشیمی"
+          ],
+          skills: [
+            "تکنیک‌های آزمایشگاهی",
+            "شیمی آلی",
+            "شیمی تجزیه",
+            "شیمی کوانتومی",
+            "طیف‌سنجی",
+            "شیمی محاسباتی",
+            "شیمی مواد",
+            "بیوشیمی"
+          ],
+          topUniversities: [
+            "دانشگاه تهران",
+            "دانشگاه صنعتی شریف",
+            "دانشگاه تربیت مدرس",
+            "دانشگاه فردوسی مشهد",
+            "دانشگاه صنعتی اصفهان",
+            "دانشگاه علم و صنعت ایران",
+            "دانشگاه شیراز"
+          ]
+        },
+        {
+          id: "mathematics",
+          title: "ریاضیات",
+          description: "رشته ریاضیات به مطالعه مفاهیم انتزاعی مانند کمیت، ساختار، فضا و تغییرات می‌پردازد. این رشته پایه بسیاری از علوم دیگر محسوب می‌شود و کاربردهای گسترده‌ای دارد. ریاضیدانان به توسعه نظریه‌های جدید و حل مسائل پیچیده می‌پردازند.",
+          tags: ["نظری", "منطقی", "پایه‌ای"],
+          icon: "fas fa-square-root-alt",
+          personalityMatch: ["منطقی", "تحلیلی", "مسئله‌گشا", "دقیق", "انتزاعی‌گرا"],
+          jobProspects: "تحلیل داده، بیمه و بانکداری، پژوهش، آموزش، فناوری اطلاعات، صنایع مختلف، شرکت‌های مشاوره، سازمان‌های برنامه‌ریزی",
+          salary: "متوسط درآمد ابتدایی: 8-12 میلیون تومان | با تجربه: 15-35 میلیون تومان | در حوزه مالی: تا 60 میلیون تومان",
+          branches: [
+            "ریاضی محض",
+            "ریاضی کاربردی",
+            "آمار",
+            "ریاضی مالی",
+            "علوم کامپیوتر نظری",
+            "ریاضیات صنعتی",
+            "ریاضیات زیستی",
+            "ریاضیات مهندسی"
+          ],
+          skills: [
+            "تحلیل ریاضی",
+            "جبر",
+            "هندسه",
+            "توپولوژی",
+            "آمار و احتمالات",
+            "روش‌های عددی",
+            "بهینه‌سازی",
+            "مدل‌سازی ریاضی"
+          ],
+          topUniversities: [
+            "دانشگاه صنعتی شریف",
+            "دانشگاه تهران",
+            "دانشگاه امیرکبیر",
+            "دانشگاه صنعتی اصفهان",
+            "دانشگاه فردوسی مشهد",
+            "دانشگاه تحصیلات تکمیلی علوم پایه زنجان",
+            "دانشگاه خوارزمی"
+          ]
+        },
+        {
+          id: "biology",
+          title: "زیست‌شناسی",
+          description: "رشته زیست‌شناسی به مطالعه حیات و موجودات زنده می‌پردازد. این رشته شامل گرایش‌های مختلفی است که هر کدام به جنبه‌های خاصی از حیات می‌پردازند. زیست‌شناسان به تحقیق در مورد ساختار، عملکرد، رشد، منشأ، تکامل و توزیع موجودات زنده می‌پردازند.",
+          tags: ["تحقیقاتی", "پزشکی", "طبیعت"],
+          icon: "fas fa-dna",
+          personalityMatch: ["کنجکاو", "دقیق", "صبور", "تحلیلی", "مشاهده‌گر"],
+          jobProspects: "تحقیقات پزشکی، آزمایشگاه‌ها، صنایع دارویی، محیط زیست، کشاورزی، سازمان‌های حفاظت از طبیعت، باغ‌های گیاهشناسی، موزه‌های تاریخ طبیعی",
+          salary: "متوسط درآمد ابتدایی: 6-9 میلیون تومان | با تجربه: 12-25 میلیون تومان | در صنایع دارویی: تا 40 میلیون تومان",
+          branches: [
+            "زیست‌شناسی سلولی و مولکولی",
+            "ژنتیک",
+            "میکروبیولوژی",
+            "بیوتکنولوژی",
+            "زیست‌شناسی تکاملی",
+            "زیست‌شناسی گیاهی",
+            "زیست‌شناسی جانوری",
+            "اکولوژی"
+          ],
+          skills: [
+            "تکنیک‌های آزمایشگاهی",
+            "ژنتیک مولکولی",
+            "میکروسکوپ‌های پیشرفته",
+            "بیوانفورماتیک",
+            "اکولوژی میدانی",
+            "بیوشیمی",
+            "کشت سلول و بافت",
+            "روش‌های نمونه‌برداری"
+          ],
+          topUniversities: [
+            "دانشگاه تهران",
+            "دانشگاه تربیت مدرس",
+            "دانشگاه شهید بهشتی",
+            "دانشگاه فردوسی مشهد",
+            "دانشگاه شیراز",
+            "دانشگاه اصفهان",
+            "دانشگاه تبریز"
+          ]
+        },
+        {
+          id: "geology",
+          title: "زمین‌شناسی",
+          description: "رشته زمین‌شناسی به مطالعه ساختار، ترکیب و تحولات زمین می‌پردازد. این رشته شامل گرایش‌های مختلفی است که هر کدام به جنبه‌های خاصی از زمین می‌پردازند. زمین‌شناسان در اکتشاف منابع طبیعی، مدیریت محیط زیست و مطالعه مخاطرات طبیعی فعالیت می‌کنند.",
+          tags: ["میدانی", "اکتشافی", "طبیعت"],
+          icon: "fas fa-mountain",
+          personalityMatch: ["کنجکاو", "مشاهده‌گر", "صبور", "تحلیلی", "انعطاف‌پذیر"],
+          jobProspects: "شرکت‌های نفت و گاز، معادن، سازمان زمین‌شناسی، مراکز تحقیقاتی، سازمان‌های محیط زیست، شرکت‌های مشاوره مهندسی، دانشگاه‌ها و مراکز آموزشی",
+          salary: "متوسط درآمد ابتدایی: 7-10 میلیون تومان | با تجربه: 15-35 میلیون تومان | در صنایع نفت و گاز: تا 60 میلیون تومان",
+          branches: [
+            "زمین‌شناسی نفت",
+            "زمین‌شناسی مهندسی",
+            "زمین‌شناسی اقتصادی",
+            "زمین‌شناسی ساختمانی",
+            "زمین‌شناسی زیست‌محیطی",
+            "زمین‌شناسی دریایی",
+            "سنگ‌شناسی",
+            "چینه‌نگاری و دیرینه‌شناسی"
+          ],
+          skills: [
+            "نقشه‌برداری زمین‌شناسی",
+            "ژئوفیزیک",
+            "ژئوشیمی",
+            "سنجش از دور",
+            "آزمایشگاه‌های تخصصی",
+            "تحلیل داده‌های میدانی",
+            "مدل‌سازی زمین‌شناسی",
+            "ارزیابی مخاطرات طبیعی"
+          ],
+          topUniversities: [
+            "دانشگاه تهران",
+            "دانشگاه تربیت مدرس",
+            "دانشگاه صنعتی اصفهان",
+            "دانشگاه شیراز",
+            "دانشگاه فردوسی مشهد",
+            "دانشگاه تبریز",
+            "دانشگاه شهید بهشتی"
+          ]
+        }
+      ],
+      social: [
+        {
+          id: "psychology",
+          title: "روانشناسی",
+          description: "رشته روانشناسی به مطالعه علمی رفتار و فرآیندهای ذهنی می‌پردازد. این رشته شامل گرایش‌های مختلفی است که هر کدام به جنبه‌های خاصی از روان انسان می‌پردازند. روانشناسان به درک، پیش‌بینی و تغییر رفتار انسان‌ها کمک می‌کنند.",
+          tags: ["انسان‌گرا", "مشاوره", "تحقیقاتی"],
+          icon: "fas fa-brain",
+          personalityMatch: ["همدل", "ارتباط‌گرا", "تحلیلی", "صبور", "گوش‌دهنده"],
+          jobProspects: "مراکز مشاوره، سازمان‌ها، مدارس، مراکز درمانی، پژوهش، زندان‌ها و مراکز اصلاحی، شرکت‌های منابع انسانی، مراکز توانبخشی",
+          salary: "متوسط درآمد ابتدایی: 7-10 میلیون تومان | با تجربه: 15-30 میلیون تومان | در مطب خصوصی: تا 50 میلیون تومان",
+          branches: [
+            "روانشناسی بالینی",
+            "روانشناسی تربیتی",
+            "روانشناسی صنعتی-سازمانی",
+            "روانشناسی رشد",
+            "روانشناسی اجتماعی",
+            "روانشناسی سلامت",
+            "روانشناسی شناختی",
+            "روانسنجی"
+          ],
+          skills: [
+            "مشاوره و رواندرمانی",
+            "ارزیابی روانشناختی",
+            "تحلیل رفتار",
+            "روش‌های تحقیق",
+            "آمار روانشناختی",
+            "مداخلات روانی-اجتماعی",
+            "روانشناسی مثبت‌نگر",
+            "روانشناسی فرهنگی"
+          ],
+          topUniversities: [
+            "دانشگاه تهران",
+            "دانشگاه شهید بهشتی",
+            "دانشگاه تربیت مدرس",
+            "دانشگاه علامه طباطبایی",
+            "دانشگاه فردوسی مشهد",
+            "دانشگاه شیراز",
+            "دانشگاه اصفهان"
+          ]
+        },
+        {
+          id: "sociology",
+          title: "جامعه‌شناسی",
+          description: "رشته جامعه‌شناسی به مطالعه علمی جامعه، نهادهای اجتماعی و روابط انسانی می‌پردازد. این رشته به تحلیل مسائل اجتماعی، تغییرات فرهنگی و ساختارهای قدرت در جامعه علاقه دارد. جامعه‌شناسان به دنبال درک الگوهای اجتماعی و ارائه راهکار برای مشکلات اجتماعی هستند.",
+          tags: ["تحلیلی", "تحقیقاتی", "جامعه‌گرا"],
+          icon: "fas fa-users",
+          personalityMatch: ["مشاهده‌گر", "تحلیلی", "ارتباط‌گرا", "انتقادی", "جامعه‌نگر"],
+          jobProspects: "تحقیقات اجتماعی، سازمان‌های دولتی، رسانه‌ها، مشاوره اجتماعی، سازمان‌های مردم‌نهاد، مراکز تحقیقات بازار، مؤسسات پژوهشی، دانشگاه‌ها",
+          salary: "متوسط درآمد ابتدایی: 6-9 میلیون تومان | با تجربه: 12-25 میلیون تومان | در پست‌های مدیریتی: تا 40 میلیون تومان",
+          branches: [
+            "جامعه‌شناسی توسعه",
+            "جامعه‌شناسی سیاسی",
+            "جامعه‌شناسی فرهنگی",
+            "جامعه‌شناسی اقتصادی",
+            "جامعه‌شناسی خانواده",
+            "جامعه‌شناسی شهری",
+            "جامعه‌شناسی روستایی",
+            "جامعه‌شناسی پزشکی"
+          ],
+          skills: [
+            "روش‌های تحقیق اجتماعی",
+            "آمار اجتماعی",
+            "تحلیل داده‌های کیفی",
+            "نظریه‌های جامعه‌شناسی",
+            "برنامه‌ریزی اجتماعی",
+            "ارزیابی پروژه‌های اجتماعی",
+            "جامعه‌شناسی تاریخی",
+            "مطالعات فرهنگی"
+          ],
+          topUniversities: [
+            "دانشگاه تهران",
+            "دانشگاه علامه طباطبایی",
+            "دانشگاه تربیت مدرس",
+            "دانشگاه شهید بهشتی",
+            "دانشگاه فردوسی مشهد",
+            "دانشگاه شیراز",
+            "دانشگاه اصفهان"
+          ]
+        },
+        {
+          id: "law",
+          title: "حقوق",
+          description: "رشته حقوق به مطالعه سیستم‌های حقوقی و قوانین حاکم بر جامعه می‌پردازد. این رشته شامل گرایش‌های مختلفی است که هر کدام به حوزه‌های خاصی از قانون می‌پردازند. حقوقدانان به تفسیر، اجرا و توسعه قوانین برای ایجاد نظم و عدالت در جامعه کمک می‌کنند.",
+          tags: ["تحلیلی", "مناظره", "خدمات عمومی"],
+          icon: "fas fa-gavel",
+          personalityMatch: ["منطقی", "قاطع", "ارتباط‌گرا", "تحلیلی", "دقیق"],
+          jobProspects: "وکالت، قضاوت، مشاوره حقوقی، سازمان‌های دولتی و بین‌المللی، شرکت‌های خصوصی، بانک‌ها، مؤسسات حقوق بشر، دانشگاه‌ها",
+          salary: "متوسط درآمد ابتدایی: 8-15 میلیون تومان | با تجربه: 20-60 میلیون تومان | در پرونده‌های بزرگ: تا 100+ میلیون تومان",
+          branches: [
+            "حقوق جزا و جرم‌شناسی",
+            "حقوق بین‌الملل",
+            "حقوق تجارت",
+            "حقوق عمومی",
+            "حقوق خصوصی",
+            "حقوق مالکیت فکری",
+            "حقوق محیط زیست",
+            "حقوق خانواده"
+          ],
+          skills: [
+            "تحلیل حقوقی",
+            "تحقیق و پژوهش حقوقی",
+            "مهارت‌های مذاکره",
+            "نگارش حقوقی",
+            "آیین دادرسی",
+            "حقوق تطبیقی",
+            "حقوق بین‌الملل",
+            "قوانین تجارت"
+          ],
+          topUniversities: [
+            "دانشگاه تهران",
+            "دانشگاه شهید بهشتی",
+            "دانشگاه علامه طباطبایی",
+            "دانشگاه تربیت مدرس",
+            "دانشگاه فردوسی مشهد",
+            "دانشگاه شیراز",
+            "دانشگاه اصفهان"
+          ]
+        },
+        {
+          id: "education",
+          title: "علوم تربیتی",
+          description: "رشته علوم تربیتی به مطالعه فرآیندهای یادگیری و آموزش می‌پردازد. این رشته شامل گرایش‌های مختلفی است که هر کدام به جنبه‌های خاصی از تعلیم و تربیت می‌پردازند. متخصصان علوم تربیتی به طراحی و اجرای برنامه‌های آموزشی موثر کمک می‌کنند.",
+          tags: ["آموزشی", "تربیتی", "خدمات عمومی"],
+          icon: "fas fa-chalkboard-teacher",
+          personalityMatch: ["ارتباط‌گرا", "صبور", "خلاق", "همدل", "سازمان‌دهنده"],
+          jobProspects: "مدارس، دانشگاه‌ها، مراکز آموزشی، سازمان‌های تربیتی، وزارت آموزش و پرورش، مؤسسات پژوهشی، مراکز مشاوره تحصیلی، سازمان‌های بین‌المللی آموزشی",
+          salary: "متوسط درآمد ابتدایی: 6-9 میلیون تومان | با تجربه: 12-25 میلیون تومان | در پست‌های مدیریتی: تا 40 میلیون تومان",
+          branches: [
+            "برنامه‌ریزی آموزشی",
+            "تکنولوژی آموزشی",
+            "مدیریت آموزشی",
+            "روانشناسی تربیتی",
+            "آموزش بزرگسالان",
+            "آموزش پیش‌دبستانی",
+            "آموزش کودکان استثنایی",
+            "آموزش الکترونیکی"
+          ],
+          skills: [
+            "طراحی آموزشی",
+            "ارزیابی آموزشی",
+            "روش‌های تدریس",
+            "تکنولوژی آموزشی",
+            "مدیریت کلاس",
+            "روانشناسی یادگیری",
+            "برنامه‌ریزی درسی",
+            "آموزش مبتنی بر شواهد"
+          ],
+          topUniversities: [
+            "دانشگاه تهران",
+            "دانشگاه شهید بهشتی",
+            "دانشگاه علامه طباطبایی",
+            "دانشگاه تربیت مدرس",
+            "دانشگاه خوارزمی",
+            "دانشگاه فردوسی مشهد",
+            "دانشگاه شیراز"
+          ]
+        },
+        {
+          id: "political_science",
+          title: "علوم سیاسی",
+          description: "رشته علوم سیاسی به مطالعه نظریه‌ها و کاربردهای قدرت، حکومت و سیاست می‌پردازد. این رشته شامل گرایش‌های مختلفی است که هر کدام به جنبه‌های خاصی از سیاست می‌پردازند. دانشجویان این رشته با تحلیل نظام‌های سیاسی، روابط بین‌الملل و نظریه‌های سیاسی آشنا می‌شوند.",
+          tags: ["تحلیلی", "سیاسی", "بین‌المللی"],
+          icon: "fas fa-landmark",
+          personalityMatch: ["تحلیلی", "انتقادی", "ارتباط‌گرا", "کنجکاو", "بین‌المللی‌نگر"],
+          jobProspects: "سازمان‌های دولتی، وزارت امور خارجه، رسانه‌ها، مؤسسات پژوهشی، سازمان‌های بین‌المللی، احزاب سیاسی، مراکز مطالعات استراتژیک، دانشگاه‌ها",
+          salary: "متوسط درآمد ابتدایی: 7-10 میلیون تومان | با تجربه: 15-35 میلیون تومان | در پست‌های دیپلماتیک: تا 60 میلیون تومان",
+          branches: [
+            "روابط بین‌الملل",
+            "اندیشه سیاسی",
+            "سیاستگذاری عمومی",
+            "جامعه‌شناسی سیاسی",
+            "تحولات سیاسی ایران",
+            "سیاست و حکومت محلی",
+            "مطالعات امنیتی",
+            "اقتصاد سیاسی"
+          ],
+          skills: [
+            "تحلیل سیاسی",
+            "روش‌های تحقیق سیاسی",
+            "نظریه‌های روابط بین‌الملل",
+            "سیاست مقایسه‌ای",
+            "دیپلماسی",
+            "تحلیل سیاست خارجی",
+            "مطالعات منطقه‌ای",
+            "حقوق بین‌الملل"
+          ],
+          topUniversities: [
+            "دانشگاه تهران",
+            "دانشگاه شهید بهشتی",
+            "دانشگاه علامه طباطبایی",
+            "دانشگاه تربیت مدرس",
+            "دانشگاه فردوسی مشهد",
+            "دانشگاه شیراز",
+            "دانشگاه اصفهان"
+          ]
+        }
+      ],
+      art: [
+        {
+          id: "graphic_design",
+          title: "طراحی گرافیک",
+          description: "رشته طراحی گرافیک به خلق آثار بصری برای ارتباطات و تبلیغات می‌پردازد. این رشته شامل گرایش‌های مختلفی است که هر کدام به جنبه‌های خاصی از طراحی بصری می‌پردازند. طراحان گرافیک با استفاده از تایپوگرافی، تصاویر و رنگ‌ها پیام‌های بصری خلق می‌کنند.",
+          tags: ["خلاقانه", "دیجیتال", "تجاری"],
+          icon: "fas fa-pencil-ruler",
+          personalityMatch: ["خلاق", "بصری", "انعطاف‌پذیر", "جزء‌نگر", "بیان‌گرا"],
+          jobProspects: "آژانس‌های تبلیغاتی، استودیوهای طراحی، شرکت‌های نرم‌افزاری، فریلنسری، نشریات و رسانه‌ها، برندهای تجاری، استارتاپ‌ها، مؤسسات فرهنگی",
+          salary: "متوسط درآمد ابتدایی: 8-12 میلیون تومان | با تجربه: 15-40 میلیون تومان | در پروژه‌های بزرگ: تا 60 میلیون تومان",
+          branches: [
+            "طراحی هویت بصری",
+            "تصویرسازی",
+            "طراحی رابط کاربری",
+            "طراحی حرکت",
+            "طراحی بسته‌بندی",
+            "تایپوگرافی",
+            "طراحی تبلیغات",
+            "طراحی اطلاعات"
+          ],
+          skills: [
+            "نرم‌افزارهای طراحی",
+            "تایپوگرافی",
+            "رنگ‌شناسی",
+            "طراحی لوگو",
+            "تصویرسازی دیجیتال",
+            "طراحی رابط کاربری",
+            "طراحی تجربه کاربری",
+            "چاپ و نشر"
+          ],
+          topUniversities: [
+            "دانشگاه هنر تهران",
+            "دانشگاه تهران",
+            "دانشگاه شهید بهشتی",
+            "دانشگاه هنر اصفهان",
+            "دانشگاه هنر تبریز",
+            "دانشگاه الزهرا",
+            "دانشگاه سوره"
+          ]
+        },
+        {
+          id: "architecture",
+          title: "معماری",
+          description: "رشته معماری به طراحی ساختمان‌ها و فضاهای زندگی می‌پردازد. این رشته ترکیبی از هنر و مهندسی است و شامل گرایش‌های مختلفی است که هر کدام به جنبه‌های خاصی از معماری می‌پردازند. معماران به طراحی فضاهای کاربردی، زیبا و پایدار می‌پردازند.",
+          tags: ["خلاقانه", "فنی", "کاربردی"],
+          icon: "fas fa-archway",
+          personalityMatch: ["خلاق", "دقیق", "تجسمی", "مسئله‌گشا", "جامعه‌نگر"],
+          jobProspects: "دفاتر معماری، شرکت‌های ساختمانی، شهرداری‌ها، مشاوره مستقل، سازمان‌های میراث فرهنگی، شرکت‌های طراحی داخلی، مؤسسات پژوهشی، دانشگاه‌ها",
+          salary: "متوسط درآمد ابتدایی: 8-12 میلیون تومان | با تجربه: 20-50 میلیون تومان | در پروژه‌های بزرگ: تا 100+ میلیون تومان",
+          branches: [
+            "معماری داخلی",
+            "معماری منظر",
+            "معماری شهری",
+            "معماری پایدار",
+            "مرمت بناهای تاریخی",
+            "معماری دیجیتال",
+            "معماری اسلامی",
+            "معماری پارامتریک"
+          ],
+          skills: [
+            "نرم‌افزارهای طراحی معماری",
+            "طراحی فنی",
+            "ماکت سازی",
+            "مصالح ساختمانی",
+            "تاریخ معماری",
+            "معماری پایدار",
+            "طراحی شهری",
+            "مدیریت پروژه معماری"
+          ],
+          topUniversities: [
+            "دانشگاه تهران",
+            "دانشگاه شهید بهشتی",
+            "دانشگاه علم و صنعت ایران",
+            "دانشگاه هنر تهران",
+            "دانشگاه تربیت مدرس",
+            "دانشگاه آزاد اسلامی واحد علوم و تحقیقات",
+            "دانشگاه شیراز"
+          ]
+        },
+        {
+          id: "music",
+          title: "موسیقی",
+          description: "رشته موسیقی به مطالعه تئوری و عملی موسیقی می‌پردازد. این رشته شامل گرایش‌های مختلفی است که هر کدام به جنبه‌های خاصی از هنر موسیقی می‌پردازند. موسیقیدانان به خلق، اجرا و تحلیل آثار موسیقایی می‌پردازند.",
+          tags: ["هنری", "خلاقانه", "اجرایی"],
+          icon: "fas fa-music",
+          personalityMatch: ["خلاق", "حساس", "بیان‌گرا", "صبور", "گوش‌دهنده"],
+          jobProspects: "اجرای زنده، استودیوهای ضبط، آموزش، آهنگسازی، رسانه، تئاتر و سینما، ارکسترها، مؤسسات فرهنگی، دانشگاه‌ها",
+          salary: "متوسط درآمد ابتدایی: 6-15 میلیون تومان | با تجربه: 20-60 میلیون تومان | در سطح بین‌المللی: تا 100+ میلیون تومان",
+          branches: [
+            "نوازندگی",
+            "آهنگسازی",
+            "موسیقی‌شناسی",
+            "موسیقی درمانی",
+            "موسیقی الکترونیک",
+            "موسیقی جهانی",
+            "موسیقی فیلم",
+            "موسیقی ایرانی"
+          ],
+          skills: [
+            "نوازندگی",
+            "سلفژ",
+            "هارمونی",
+            "کنترپوان",
+            "آهنگسازی",
+            "تنظیم",
+            "موسیقی‌شناسی",
+            "تدریس موسیقی"
+          ],
+          topUniversities: [
+            "دانشگاه هنر تهران",
+            "دانشگاه تهران",
+            "دانشگاه شهید بهشتی",
+            "دانشگاه علمی-کاربردی",
+            "دانشگاه آزاد اسلامی",
+            "کنسرواتوار تهران",
+            "دانشگاه سوره"
+          ]
+        },
+        {
+          id: "literature",
+          title: "ادبیات",
+          description: "رشته ادبیات به مطالعه و تحلیل آثار نوشتاری می‌پردازد. این رشته شامل گرایش‌های مختلفی است که هر کدام به جنبه‌های خاصی از ادبیات می‌پردازند. دانشجویان این رشته با نقد، تحلیل و خلق آثار ادبی آشنا می‌شوند.",
+          tags: ["تحلیلی", "خلاقانه", "نوشتاری"],
+          icon: "fas fa-book",
+          personalityMatch: ["تحلیلی", "بیان‌گرا", "حساس", "کنجکاو", "انتقادی"],
+          jobProspects: "نویسندگی، ویراستاری، آموزش، رسانه‌ها، پژوهش ادبی، نشر و چاپ، مؤسسات فرهنگی، دانشگاه‌ها، سازمان‌های تبلیغاتی",
+          salary: "متوسط درآمد ابتدایی: 6-10 میلیون تومان | با تجربه: 12-30 میلیون تومان | در نویسندگی موفق: تا 50+ میلیون تومان",
+          branches: [
+            "ادبیات فارسی",
+            "ادبیات جهان",
+            "ادبیات تطبیقی",
+            "نقد ادبی",
+            "ویرایش و نگارش",
+            "ادبیات کودک و نوجوان",
+            "ادبیات نمایشی",
+            "ادبیات داستانی"
+          ],
+          skills: [
+            "نقد ادبی",
+            "نگارش خلاق",
+            "تحلیل متون",
+            "تاریخ ادبیات",
+            "ویراستاری",
+            "ترجمه ادبی",
+            "سبک‌شناسی",
+            "مطالعات بینارشته‌ای"
+          ],
+          topUniversities: [
+            "دانشگاه تهران",
+            "دانشگاه شهید بهشتی",
+            "دانشگاه علامه طباطبایی",
+            "دانشگاه فردوسی مشهد",
+            "دانشگاه شیراز",
+            "دانشگاه اصفهان",
+            "دانشگاه تبریز"
+          ]
+        },
+        {
+          id: "film_studies",
+          title: "مطالعات سینما",
+          description: "رشته مطالعات سینما به تحلیل و نقد فیلم و سینما می‌پردازد. این رشته شامل گرایش‌های مختلفی است که هر کدام به جنبه‌های خاصی از هنر سینما می‌پردازند. دانشجویان این رشته با تاریخ سینما، نظریه‌های فیلم و تولید سینمایی آشنا می‌شوند.",
+          tags: ["هنری", "تحلیلی", "خلاقانه"],
+          icon: "fas fa-film",
+          personalityMatch: ["خلاق", "تحلیلی", "بیننده‌گرا", "انتقادی", "بیان‌گرا"],
+          jobProspects: "نقد فیلم، فیلمسازی، آموزش، رسانه‌ها، جشنواره‌های فیلم، مؤسسات فرهنگی، آرشیوهای فیلم، دانشگاه‌ها، تولید محتوای دیجیتال",
+          salary: "متوسط درآمد ابتدایی: 6-10 میلیون تومان | با تجربه: 15-40 میلیون تومان | در پروژه‌های بزرگ: تا 100+ میلیون تومان",
+          branches: [
+            "کارگردانی",
+            "فیلمنامه‌نویسی",
+            "تدوین",
+            "فیلمبرداری",
+            "تولید فیلم",
+            "نقد فیلم",
+            "تاریخ سینما",
+            "مطالعات سینمای جهان"
+          ],
+          skills: [
+            "تحلیل فیلم",
+            "فیلمنامه‌نویسی",
+            "تاریخ سینما",
+            "نظریه‌های فیلم",
+            "تکنیک‌های فیلمسازی",
+            "تدوین دیجیتال",
+            "تولید محتوای ویدئویی",
+            "مدیریت تولید"
+          ],
+          topUniversities: [
+            "دانشگاه هنر تهران",
+            "دانشگاه تهران",
+            "دانشگاه سوره",
+            "دانشگاه صدا و سیما",
+            "دانشگاه آزاد اسلامی",
+            "دانشگاه علمی-کاربردی",
+            "دانشگاه هنر اصفهان"
+          ]
+        }
+      ],
+      medical: [
+        {
+          id: "medicine",
+          title: "پزشکی",
+          description: "رشته پزشکی به تشخیص، درمان و پیشگیری از بیماری‌ها می‌پردازد. این رشته شامل تخصص‌های مختلفی است که هر کدام به جنبه‌های خاصی از سلامت انسان می‌پردازند. پزشکان با استفاده از دانش علمی و مهارت‌های بالینی به مراقبت از بیماران می‌پردازند.",
+          tags: ["انسان‌گرا", "تحقیقاتی", "پرچالش"],
+          icon: "fas fa-user-md",
+          personalityMatch: ["دلسوز", "صبور", "مسئولیت‌پذیر", "دقیق", "تحلیلی"],
+          jobProspects: "بیمارستان‌ها، مطب‌های خصوصی، مراکز تحقیقاتی، سازمان‌های بهداشتی، اورژانس‌ها، کلینیک‌های تخصصی، دانشگاه‌ها، سازمان‌های بین‌المللی سلامت",
+          salary: "متوسط درآمد ابتدایی: 12-20 میلیون تومان | با تجربه: 30-100+ میلیون تومان | در تخصص‌های خاص: تا 200+ میلیون تومان",
+          branches: [
+            "پزشکی عمومی",
+            "جراحی",
+            "پزشکی داخلی",
+            "اطفال",
+            "روانپزشکی",
+            "پزشکی خانواده",
+            "پزشکی اورژانس",
+            "پزشکی ورزشی"
+          ],
+          skills: [
+            "تشخیص بیماری",
+            "درمان‌های پزشکی",
+            "جراحی",
+            "ارتباط با بیمار",
+            "تحقیقات پزشکی",
+            "مدیریت بحران",
+            "کار تیمی در سلامت",
+            "اخلاق پزشکی"
+          ],
+          topUniversities: [
+            "دانشگاه علوم پزشکی تهران",
+            "دانشگاه علوم پزشکی شهید بهشتی",
+            "دانشگاه علوم پزشکی ایران",
+            "دانشگاه علوم پزشکی مشهد",
+            "دانشگاه علوم پزشکی شیراز",
+            "دانشگاه علوم پزشکی اصفهان",
+            "دانشگاه علوم پزشکی تبریز"
+          ]
+        },
+        {
+          id: "dentistry",
+          title: "دندانپزشکی",
+          description: "رشته دندانپزشکی به تشخیص و درمان بیماری‌های دهان و دندان می‌پردازد. این رشته شامل تخصص‌های مختلفی است که هر کدام به جنبه‌های خاصی از سلامت دهان و دندان می‌پردازند. دندانپزشکان به حفظ سلامت دهان و زیبایی دندان‌ها کمک می‌کنند.",
+          tags: ["دقیق", "عملی", "درآمد بالا"],
+          icon: "fas fa-tooth",
+          personalityMatch: ["دقیق", "صبور", "مهارتی", "حساس", "خدمت‌گرا"],
+          jobProspects: "مطب‌های خصوصی، کلینیک‌های دندانپزشکی، بیمارستان‌ها، مراکز تحقیقاتی دندانپزشکی، دانشگاه‌ها، سازمان‌های بهداشتی، مراکز زیبایی دندان",
+          salary: "متوسط درآمد ابتدایی: 15-30 میلیون تومان | با تجربه: 40-100+ میلیون تومان | در تخصص‌های خاص: تا 150+ میلیون تومان",
+          branches: [
+            "ارتودنسی",
+            "جراحی فک و صورت",
+            "پروتزهای دندانی",
+            "اندودنتیکس",
+            "پریودنتیکس",
+            "دندانپزشکی کودکان",
+            "پاتولوژی دهان",
+            "دندانپزشکی ترمیمی"
+          ],
+          skills: [
+            "درمان‌های دندانپزشکی",
+            "جراحی دهان",
+            "ارتودنسی",
+            "زیبایی دندان",
+            "تشخیص بیماری‌های دهان",
+            "کار با تجهیزات دندانپزشکی",
+            "مدیریت درد",
+            "ارتباط با بیمار"
+          ],
+          topUniversities: [
+            "دانشگاه علوم پزشکی تهران",
+            "دانشگاه علوم پزشکی شهید بهشتی",
+            "دانشگاه علوم پزشکی ایران",
+            "دانشگاه علوم پزشکی مشهد",
+            "دانشگاه علوم پزشکی شیراز",
+            "دانشگاه علوم پزشکی اصفهان",
+            "دانشگاه علوم پزشکی تبریز"
+          ]
+        },
+        {
+          id: "pharmacy",
+          title: "داروسازی",
+          description: "رشته داروسازی به تحقیق، تولید و توزیع داروها می‌پردازد. این رشته شامل گرایش‌های مختلفی است که هر کدام به جنبه‌های خاصی از علم داروسازی می‌پردازند. داروسازان به توسعه داروهای جدید و اطمینان از مصرف ایمن داروها کمک می‌کنند.",
+          tags: ["تحقیقاتی", "دقیق", "خدمات سلامت"],
+          icon: "fas fa-pills",
+          personalityMatch: ["دقیق", "تحلیلی", "مسئولیت‌پذیر", "علم‌گرا", "جزء‌نگر"],
+          jobProspects: "داروخانه‌ها، صنایع دارویی، بیمارستان‌ها، مراکز تحقیقاتی، سازمان‌های نظارتی دارو، دانشگاه‌ها، شرکت‌های توزیع دارو، سازمان‌های بین‌المللی سلامت",
+          salary: "متوسط درآمد ابتدایی: 10-15 میلیون تومان | با تجربه: 20-50 میلیون تومان | در صنایع دارویی: تا 80 میلیون تومان",
+          branches: [
+            "فارماکوگنوزی",
+            "فارماسیوتیکس",
+            "سم‌شناسی",
+            "بیوتکنولوژی دارویی",
+            "داروسازی بیمارستانی",
+            "شیمی دارویی",
+            "نانوفارماسی",
+            "کنترل و تضمین کیفیت دارو"
+          ],
+          skills: [
+            "شناخت داروها",
+            "تولید دارو",
+            "کنترل کیفیت دارو",
+            "مشاوره دارویی",
+            "تحقیقات دارویی",
+            "مدیریت داروخانه",
+            "فارماکوکینتیک",
+            "فارماکودینامیک"
+          ],
+          topUniversities: [
+            "دانشگاه علوم پزشکی تهران",
+            "دانشگاه علوم پزشکی شهید بهشتی",
+            "دانشگاه علوم پزشکی مشهد",
+            "دانشگاه علوم پزشکی تبریز",
+            "دانشگاه علوم پزشکی شیراز",
+            "دانشگاه علوم پزشکی اصفهان",
+            "دانشگاه علوم پزشکی ایران"
+          ]
+        },
+        {
+          id: "nursing",
+          title: "پرستاری",
+          description: "رشته پرستاری به مراقبت از بیماران و کمک به پزشکان در درمان می‌پردازد. این رشته شامل گرایش‌های مختلفی است که هر کدام به جنبه‌های خاصی از مراقبت‌های بهداشتی می‌پردازند. پرستاران نقش کلیدی در سیستم سلامت ایفا می‌کنند.",
+          tags: ["مراقبتی", "عملی", "خدمات سلامت"],
+          icon: "fas fa-user-nurse",
+          personalityMatch: ["دلسوز", "صبور", "انعطاف‌پذیر", "مسئولیت‌پذیر", "کار تیمی"],
+          jobProspects: "بیمارستان‌ها، کلینیک‌ها، مراکز مراقبتی، سازمان‌های امدادی، مراکز توانبخشی، خانه‌های سالمندان، دانشگاه‌ها، سازمان‌های بین‌المللی سلامت",
+          salary: "متوسط درآمد ابتدایی: 6-9 میلیون تومان | با تجربه: 12-25 میلیون تومان | در پست‌های مدیریتی: تا 40 میلیون تومان",
+          branches: [
+            "پرستاری داخلی-جراحی",
+            "پرستاری کودکان",
+            "پرستاری اورژانس",
+            "پرستاری سالمندی",
+            "پرستاری روانپزشکی",
+            "پرستاری مراقبت‌های ویژه",
+            "پرستاری جامعه",
+            "پرستاری توانبخشی"
+          ],
+          skills: [
+            "مراقبت از بیمار",
+            "تزریقات و پانسمان",
+            "مدیریت درد",
+            "اورژانس و احیا",
+            "کار تیمی در سلامت",
+            "آموزش به بیمار",
+            "مدیریت استرس",
+            "مهارت‌های ارتباطی"
+          ],
+          topUniversities: [
+            "دانشگاه علوم پزشکی تهران",
+            "دانشگاه علوم پزشکی شهید بهشتی",
+            "دانشگاه علوم پزشکی ایران",
+            "دانشگاه علوم پزشکی مشهد",
+            "دانشگاه علوم پزشکی شیراز",
+            "دانشگاه علوم پزشکی اصفهان",
+            "دانشگاه علوم پزشکی تبریز"
+          ]
+        },
+        {
+          id: "nutrition",
+          title: "علوم تغذیه",
+          description: "رشته علوم تغذیه به مطالعه رابطه بین غذا، سلامت و بیماری می‌پردازد. این رشته شامل گرایش‌های مختلفی است که هر کدام به جنبه‌های خاصی از تغذیه می‌پردازند. متخصصان تغذیه به طراحی برنامه‌های غذایی برای افراد و گروه‌ها کمک می‌کنند.",
+          tags: ["پیشگیرانه", "سلامت‌محور", "علمی"],
+          icon: "fas fa-utensils",
+          personalityMatch: ["دلسوز", "علم‌گرا", "ارتباط‌گرا", "جزء‌نگر", "آموزش‌دهنده"],
+          jobProspects: "بیمارستان‌ها، کلینیک‌های تغذیه، مراکز ورزشی، صنایع غذایی، سازمان‌های بهداشتی، مراکز تحقیقاتی، دانشگاه‌ها، رسانه‌های سلامت",
+          salary: "متوسط درآمد ابتدایی: 7-10 میلیون تومان | با تجربه: 15-35 میلیون تومان | در مشاوره خصوصی: تا 50 میلیون تومان",
+          branches: [
+            "تغذیه بالینی",
+            "تغذیه جامعه",
+            "تغذیه ورزشی",
+            "علوم و صنایع غذایی",
+            "تغذیه کودکان",
+            "رژیم‌درمانی",
+            "میکروبیولوژی مواد غذایی",
+            "تغذیه در بیماری‌های خاص"
+          ],
+          skills: [
+            "برنامه‌ریزی غذایی",
+            "ارزیابی وضعیت تغذیه",
+            "رژیم‌درمانی",
+            "آموزش تغذیه",
+            "تحقیقات تغذیه‌ای",
+            "تغذیه ورزشی",
+            "برچسب‌خوانی مواد غذایی",
+            "مشاوره تغذیه"
+          ],
+          topUniversities: [
+            "دانشگاه علوم پزشکی تهران",
+            "دانشگاه علوم پزشکی شهید بهشتی",
+            "دانشگاه علوم پزشکی ایران",
+            "دانشگاه علوم پزشکی مشهد",
+            "دانشگاه علوم پزشکی شیراز",
+            "دانشگاه علوم پزشکی اصفهان",
+            "دانشگاه علوم پزشکی تبریز"
+          ]
+        }
+      ]
+    };
+
+    // متغیرهای حالت برنامه
+    let currentQuestion = 0;
+    let answers = {};
+    let personalityType = "";
+    let personalityTraits = [];
+    let personalityDescription = "";
+    let domainScores = {
+      technical: 0,
+      science: 0,
+      social: 0,
+      art: 0,
+      medical: 0
+    };
+
+    // مقداردهی اولیه فرم
+    document.addEventListener('DOMContentLoaded', function() {
+      renderQuestion();
+      updateProgressBar();
+      createParticles();
+    });
+
+    // ایجاد ذرات شناور برای پس‌زمینه
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 30;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        // اندازه تصادفی بین 3 تا 8 پیکسل
+        const size = Math.random() * 5 + 3;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // موقعیت تصادفی در صفحه
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        
+        // شفافیت تصادفی
+        particle.style.opacity = Math.random() * 0.5 + 0.1;
+        
+        // مدت زمان انیمیشن تصادفی
+        const duration = Math.random() * 20 + 10;
+        particle.style.animation = `float ${duration}s linear infinite`;
+        
+        // تاخیر تصادفی برای شروع انیمیشن
+        particle.style.animationDelay = `${Math.random() * 10}s`;
+        
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    // نمایش سوال فعلی
+    function renderQuestion() {
+      const questionsContainer = document.getElementById('questionsContainer');
+      const question = questions[currentQuestion];
+      
+      let optionsHTML = '';
+      question.options.forEach((option, index) => {
+        optionsHTML += `
+          <div class="option" onclick="selectOption(${currentQuestion}, ${index})">
+            <input type="radio" name="q${question.id}" id="q${question.id}_${index}" value="${option.value}">
+            <label class="option-label" for="q${question.id}_${index}">${option.text}</label>
+          </div>
+        `;
+      });
+      
+      questionsContainer.innerHTML = `
+        <div class="question">
+          <div class="question-title">
+            <i class="${question.icon}"></i> ${question.text}
+          </div>
+          <div class="options">
+            ${optionsHTML}
+          </div>
+        </div>
+      `;
+      
+      // نمایش دکمه‌های مناسب
+      document.getElementById('prevBtn').disabled = currentQuestion === 0;
+      document.getElementById('nextBtn').classList.toggle('hidden', currentQuestion === questions.length - 1);
+      document.getElementById('submitBtn').classList.toggle('hidden', currentQuestion !== questions.length - 1);
+      
+      // فعال/غیرفعال کردن دکمه‌ها بر اساس پاسخ‌ها
+      updateButtonsState();
+      
+      // به‌روزرسانی شمارنده سوالات
+      document.getElementById('questionCounter').textContent = `سوال ${currentQuestion + 1} از ${questions.length}`;
+      
+      // انتخاب گزینه‌ای که قبلاً انتخاب شده بود
+      if (answers[currentQuestion] !== undefined) {
+        const selectedOptionIndex = question.options.findIndex(opt => opt.value === answers[currentQuestion].value);
+        if (selectedOptionIndex !== -1) {
+          const radio = document.querySelector(`input[name="q${question.id}"][value="${answers[currentQuestion].value}"]`);
+          if (radio) {
+            radio.checked = true;
+            radio.parentElement.style.backgroundColor = '#e9ecef';
+          }
+        }
+      }
+    }
+
+    // انتخاب گزینه توسط کاربر
+    function selectOption(questionIndex, optionIndex) {
+      const question = questions[questionIndex];
+      const selectedOption = question.options[optionIndex];
+      
+      answers[questionIndex] = {
+        value: selectedOption.value,
+        text: selectedOption.text,
+        weight: selectedOption.weight
+      };
+      
+      // تغییر ظاهر گزینه انتخاب شده
+      const options = document.querySelectorAll('.option');
+      options.forEach(opt => opt.style.backgroundColor = '#f8f9fa');
+      
+      const selectedOptionElement = document.querySelector(`input[name="q${question.id}"][value="${selectedOption.value}"]`).parentElement;
+      selectedOptionElement.style.backgroundColor = '#e9ecef';
+      
+      // مخفی کردن پیام خطا در صورت وجود
+      document.getElementById('errorMessage').style.display = 'none';
+      
+      // فعال کردن دکمه‌ها
+      updateButtonsState();
+    }
+
+    // به‌روزرسانی وضعیت دکمه‌ها
+    function updateButtonsState() {
+      const hasAnswer = answers[currentQuestion] !== undefined;
+      
+      document.getElementById('nextBtn').disabled = !hasAnswer;
+      document.getElementById('submitBtn').disabled = !hasAnswer;
+      
+      // برای سوال آخر فقط دکمه ارسال را بررسی می‌کنیم
+      if (currentQuestion === questions.length - 1) {
+        document.getElementById('nextBtn').classList.add('hidden');
+        document.getElementById('submitBtn').classList.remove('hidden');
+      }
+    }
+
+    // رفتن به سوال بعدی
+    function nextQuestion() {
+      if (answers[currentQuestion] === undefined) {
+        showError();
+        return;
+      }
+      
+      if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        renderQuestion();
+        updateProgressBar();
+      }
+    }
+
+    // برگشت به سوال قبلی
+    function prevQuestion() {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion();
+        updateProgressBar();
+      }
+    }
+
+    // نمایش خطا در صورت پاسخ ندادن
+    function showError() {
+      const errorElement = document.getElementById('errorMessage');
+      errorElement.style.display = 'block';
+      errorElement.classList.add('shake');
+      
+      setTimeout(() => {
+        errorElement.classList.remove('shake');
+      }, 500);
+    }
+
+    // به‌روزرسانی نوار پیشرفت
+    function updateProgressBar() {
+      const progress = ((currentQuestion + 1) / questions.length) * 100;
+      document.getElementById('progressBar').style.width = `${progress}%`;
+    }
+
+    // نمایش نتایج
+    function showResult() {
+      if (answers[currentQuestion] === undefined) {
+        showError();
+        return;
+      }
+      
+      // نمایش انیمیشن بارگذاری
+      document.getElementById('quizForm').style.display = 'none';
+      document.getElementById('loader').style.display = 'block';
+      
+      // شبیه‌سازی پردازش داده‌ها
+      setTimeout(() => {
+        analyzeAnswers();
+        displayResults();
+        
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('result').style.display = 'block';
+        
+        // اسکرول به بخش نتایج
+        document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+      }, 2000);
+    }
+
+    // تحلیل پاسخ‌ها و تعیین تیپ شخصیتی
+    function analyzeAnswers() {
+      // ریست امتیازات
+      domainScores = {
+        technical: 0,
+        science: 0,
+        social: 0,
+        art: 0,
+        medical: 0
+      };
+      
+      // محاسبه امتیازات در حوزه‌های مختلف
+      for (const questionIndex in answers) {
+        const answer = answers[questionIndex];
+        
+        for (const domain in answer.weight) {
+          domainScores[domain] += answer.weight[domain];
+        }
+      }
+      
+      // تعیین حوزه غالب
+      const maxScore = Math.max(...Object.values(domainScores));
+      const dominantField = Object.keys(domainScores).find(key => domainScores[key] === maxScore);
+      
+      // تعیین تیپ شخصیتی بر اساس حوزه غالب
+      switch(dominantField) {
+        case 'technical':
+          personalityType = "تیپ تحلیلی-منطقی";
+          personalityDescription = "شما دارای ذهنی تحلیل‌گر و ساختارمند هستید که به حل مسائل پیچیده علاقه دارد. از کار با سیستم‌ها و الگوریتم‌ها لذت می‌برید و به دنبال راه‌حل‌های عملی و کارآمد هستید. نقاط قوت شما شامل تفکر منطقی، توجه به جزئیات و توانایی حل مسئله است. شما احتمالاً در محیط‌های ساختارمند و فنی که نیاز به تحلیل و طراحی دارند، موفق خواهید بود.";
+          personalityTraits = ["منطقی", "مسئله‌گشا", "جزء‌نگر", "تحلیلی", "ساختارمند", "دقیق", "عملگرا"];
+          break;
+        case 'science':
+          personalityType = "تیپ تحقیقاتی-کنجکاو";
+          personalityDescription = "شما فردی کنجکاو و پژوهش‌گر هستید که به کشف حقایق علمی و درک عمیق پدیده‌ها علاقه دارید. از کارهای تحقیقاتی و آزمایش‌های علمی لذت می‌برید و به دنبال پاسخ سوالات بنیادین هستید. نقاط قوت شما شامل تفکر انتقادی، صبر و حوصله در تحقیق و توانایی کار با داده‌های پیچیده است. شما احتمالاً در محیط‌های دانشگاهی، آزمایشگاهی و پژوهشی که نیاز به کاوش و اکتشاف دارد، شکوفا خواهید شد.";
+          personalityTraits = ["کنجکاو", "تحقیقاتی", "منطقی", "صبر زیاد", "تحلیلی", "علم‌گرا", "مستقل"];
+          break;
+        case 'social':
+          personalityType = "تیپ اجتماعی-ارتباطی";
+          personalityDescription = "شما فردی مردم‌دار و ارتباط‌گرا هستید که به تعامل با دیگران و حل مشکلات اجتماعی علاقه دارید. از کار گروهی و کمک به دیگران لذت می‌برید و مهارت‌های کلامی و ارتباطی قوی دارید. نقاط قوت شما شامل همدلی، توانایی کار تیمی و درک نیازهای انسانی است. شما احتمالاً در مشاغل خدماتی، آموزشی و مشاوره که نیاز به تعامل انسانی دارد، موفق خواهید بود.";
+          personalityTraits = ["مردم‌دار", "همدل", "ارتباط‌گرا", "تعامل‌پذیر", "گروه‌گرا", "حمایتگر", "دیپلماتیک"];
+          break;
+        case 'art':
+          personalityType = "تیپ خلاق-هنری";
+          personalityDescription = "شما فردی خلاق و با ذوق هنری هستید که به بیان ایده‌ها از طریق هنر علاقه دارید. از کارهای خلاقانه و غیررسمی لذت می‌برید و به دنبال زیبایی‌شناسی و بیان شخصی هستید. نقاط قوت شما شامل تخیل قوی، حساسیت هنری و توانایی دیدن جهان از زوایای منحصر به فرد است. شما احتمالاً در محیط‌های هنری، طراحی و خلاق که نیاز به نوآوری و ایده‌پردازی دارد، شکوفا خواهید شد.";
+          personalityTraits = ["خلاق", "حساس", "بیان‌گرا", "مستقل", "بصری", "انعطاف‌پذیر", "اصیل"];
+          break;
+        case 'medical':
+          personalityType = "تیپ انسان‌گرا-یاری‌دهنده";
+          personalityDescription = "شما فردی دلسوز و مسئولیت‌پذیر هستید که به کمک به دیگران و حل مشکلات سلامت علاقه دارید. از مراقبت از دیگران لذت می‌برید و در شرایط دشوار آرامش خود را حفظ می‌کنید. نقاط قوت شما شامل صبر و تحمل، توجه به جزئیات و توانایی کار تحت فشار است. شما احتمالاً در مشاغل درمانی، بهداشتی و خدماتی که نیاز به مراقبت و کمک به دیگران دارد، موفق خواهید بود.";
+          personalityTraits = ["دلسوز", "صبور", "مسئولیت‌پذیر", "جزء‌نگر", "عملی", "فداکار", "قابل اعتماد"];
+          break;
+        default:
+          personalityType = "تیپ چندبعدی";
+          personalityDescription = "شما فردی چندبعدی هستید که در چند حوزه مختلف علایق و توانایی‌ها دارید. ممکن است رشته‌های بین‌رشته‌ای که ترکیبی از چند حوزه هستند، برای شما جذاب باشند. انعطاف‌پذیری و تنوع‌طلبی شما به شما کمک می‌کند در محیط‌های کاری متنوع موفق شوید. نقاط قوت شما شامل توانایی تطبیق با موقعیت‌های مختلف، دیدگاه چندبعدی و یادگیری سریع است.";
+          personalityTraits = ["انعطاف‌پذیر", "کنجکاو", "متنوع‌پسند", "سازگار", "چندبعدی", "جامع‌نگر", "یادگیرنده سریع"];
+      }
+      
+      return dominantField;
+    }
+
+    // نمایش نتایج به کاربر
+    function displayResults() {
+      const dominantField = analyzeAnswers();
+      
+      // نمایش تیپ شخصیتی
+      document.getElementById('personalityType').textContent = personalityType;
+      document.getElementById('personalityDescription').innerHTML = `
+        <p style="margin-bottom: 0;">${personalityDescription}</p>
+      `;
+      
+      // نمایش ویژگی‌های شخصیتی
+      const traitsContainer = document.getElementById('personalityTraits');
+      traitsContainer.innerHTML = personalityTraits.map(trait => `
+        <span class="trait">${trait}</span>
+      `).join('');
+      
+      // نمایش توضیحات نتیجه
+      let description = "";
+      let recommendedCourses = [];
+      
+      switch(dominantField) {
+        case 'technical':
+          description = `
+            <p>بر اساس تحلیل پاسخ‌های شما، <strong>رشته‌های مهندسی و فناوری</strong> بیشترین تناسب را با شخصیت و توانایی‌های شما دارند. شما دارای ذهنی تحلیل‌گر و منطقی هستید که به حل مسائل پیچیده علاقه دارد. توانایی شما در درک مفاهیم انتزاعی و حل مسائل، شما را به یک دانشجوی موفق در حوزه‌های فناوری تبدیل خواهد کرد.</p>
+            <p>رشته‌های مهندسی معمولاً بازار کار خوبی دارند و فرصت‌های شغلی متنوعی در صنایع مختلف ارائه می‌دهند. با توجه به پیشرفت سریع فناوری، این رشته‌ها دائماً در حال توسعه هستند و نیاز به نیروی متخصص در این حوزه‌ها بالا است. مهارت‌های فنی شما در کنار توانایی حل مسئله می‌تواند شما را به یک مهندس موفق تبدیل کند.</p>
+            <p>برخی از مشاغل مرتبط با این حوزه شامل مهندسی نرم‌افزار، مهندسی برق، مهندسی مکانیک، مهندسی کامپیوتر و مهندسی صنایع می‌شود. این مشاغل معمولاً درآمد بالایی دارند و فرصت‌های شغلی بین‌المللی نیز ارائه می‌دهند.</p>
+          `;
+          recommendedCourses = courses.technical;
+          break;
+        case 'science':
+          description = `
+            <p>بر اساس تحلیل پاسخ‌های شما، <strong>رشته‌های علوم پایه</strong> بیشترین تناسب را با شخصیت و توانایی‌های شما دارند. شما دارای روحیه‌ای کنجکاو و پژوهشی هستید که به کشف حقایق علمی علاقه دارد. صبر و دقت شما در انجام آزمایش‌ها و تحقیقات، شما را به یک محقق توانا تبدیل خواهد کرد.</p>
+            <p>رشته‌های علوم پایه پایه‌ای برای بسیاری از علوم کاربردی هستند و فرصت‌های شغلی در مراکز تحقیقاتی، صنایع پیشرفته و دانشگاه‌ها دارند. این رشته‌ها برای افرادی که به تحقیق و کشف ناشناخته‌ها علاقه دارند بسیار مناسب هستند. توانایی شما در تحلیل داده‌ها و حل مسائل پیچیده می‌تواند در این حوزه بسیار ارزشمند باشد.</p>
+            <p>برخی از مشاغل مرتبط با این حوزه شامل فیزیکدان، شیمیدان، زیست‌شناس، ریاضیدان و زمین‌شناس می‌شود. این مشاغل معمولاً در مراکز تحقیقاتی، دانشگاه‌ها و صنایع پیشرفته وجود دارند و امکان همکاری بین‌المللی نیز فراهم است.</p>
+          `;
+          recommendedCourses = courses.science;
+          break;
+        case 'social':
+          description = `
+            <p>بر اساس تحلیل پاسخ‌های شما، <strong>رشته‌های علوم انسانی و اجتماعی</strong> بیشترین تناسب را با شخصیت و توانایی‌های شما دارند. شما فردی مردم‌دار و ارتباط‌گرا هستید که به تعامل با دیگران و حل مشکلات اجتماعی علاقه دارد. توانایی شما در درک احساسات دیگران و ارتباط موثر، شما را در این حوزه‌ها موفق خواهد کرد.</p>
+            <p>این رشته‌ها معمولاً فرصت‌های شغلی در زمینه‌های مشاوره، آموزش، مدیریت و خدمات اجتماعی ارائه می‌دهند. با توجه به پیچیدگی روزافزون روابط انسانی در جامعه، نیاز به متخصصان این حوزه‌ها در حال افزایش است. مهارت‌های ارتباطی و اجتماعی شما می‌تواند در مشاغل مختلف این حوزه بسیار مفید باشد.</p>
+            <p>برخی از مشاغل مرتبط با این حوزه شامل روانشناس، جامعه‌شناس، مشاور، مددکار اجتماعی، معلم و مدیر منابع انسانی می‌شود. این مشاغل معمولاً در سازمان‌های دولتی و خصوصی، مدارس، دانشگاه‌ها و مراکز مشاوره وجود دارند.</p>
+          `;
+          recommendedCourses = courses.social;
+          break;
+        case 'art':
+          description = `
+            <p>بر اساس تحلیل پاسخ‌های شما، <strong>رشته‌های هنری و خلاقانه</strong> بیشترین تناسب را با شخصیت و توانایی‌های شما دارند. شما فردی خلاق و با ذوق هنری هستید که به بیان ایده‌ها از طریق هنر علاقه دارد. توانایی شما در دیدن جهان از زوایای مختلف و خلق آثار منحصر به فرد، شما را به یک هنرمند یا طراح موفق تبدیل خواهد کرد.</p>
+            <p>این رشته‌ها معمولاً بازار کار پویایی دارند و با توسعه صنایع خلاق و دیجیتال، فرصت‌های شغلی جدیدی در این حوزه‌ها ایجاد شده است. موفقیت در این رشته‌ها علاوه بر استعداد، به پشتکار و شبکه‌سازی حرفه‌ای نیز نیاز دارد. خلاقیت و نوآوری شما می‌تواند در این حوزه بسیار ارزشمند باشد.</p>
+            <p>برخی از مشاغل مرتبط با این حوزه شامل طراح گرافیک، معمار، موزیسین، نویسنده، فیلمساز و هنرمند تجسمی می‌شود. این مشاغل معمولاً در استودیوهای طراحی، آژانس‌های تبلیغاتی، شرکت‌های رسانه‌ای و به صورت فریلنسری وجود دارند.</p>
+          `;
+          recommendedCourses = courses.art;
+          break;
+        case 'medical':
+          description = `
+            <p>بر اساس تحلیل پاسخ‌های شما، <strong>رشته‌های پزشکی و سلامت</strong> بیشترین تناسب را با شخصیت و توانایی‌های شما دارند. شما فردی دلسوز و مسئولیت‌پذیر هستید که به کمک به دیگران و حل مشکلات سلامت علاقه دارد. صبر و حوصله شما در برخورد با بیماران و دقت شما در انجام کارهای عملی، شما را به یک متخصص سلامت موفق تبدیل خواهد کرد.</p>
+            <p>این رشته‌ها معمولاً طولانی‌تر و پرچالش‌تر هستند اما از نظر اجتماعی بسیار ارزشمندند و بازار کار خوبی دارند. با توجه به پیشرفت‌های پزشکی و افزایش نیاز به خدمات سلامت، متخصصان این حوزه همیشه مورد نیاز خواهند بود. توانایی شما در کار تحت فشار و توجه به جزئیات می‌تواند در این حوزه بسیار مفید باشد.</p>
+            <p>برخی از مشاغل مرتبط با این حوزه شامل پزشک، دندانپزشک، پرستار، داروساز و متخصص تغذیه می‌شود. این مشاغل معمولاً در بیمارستان‌ها، کلینیک‌ها، مطب‌های خصوصی و مراکز تحقیقاتی وجود دارند.</p>
+          `;
+          recommendedCourses = courses.medical;
+          break;
+        default:
+          description = `
+            <p>بر اساس تحلیل پاسخ‌های شما، شما فردی چندبعدی هستید که در چند حوزه مختلف علایق و توانایی‌ها دارید. ممکن است رشته‌های بین‌رشته‌ای که ترکیبی از چند حوزه هستند، برای شما جذاب باشند. انعطاف‌پذیری و تنوع‌طلبی شما به شما کمک می‌کند در محیط‌های کاری متنوع موفق شوید.</p>
+            <p>رشته‌های بین‌رشته‌ای مانند مهندسی پزشکی، روانشناسی شناختی، یا طراحی تعامل می‌توانند برای شما مناسب باشند. این رشته‌ها معمولاً نوپا هستند و فرصت‌های شغلی جدیدی ایجاد می‌کنند. توانایی شما در ترکیب دانش از حوزه‌های مختلف می‌تواند در این رشته‌ها بسیار ارزشمند باشد.</p>
+            <p>برخی از مشاغل مرتبط با این حوزه شامل مهندس پزشکی، متخصص بیوانفورماتیک، طراح تجربه کاربری، متخصص علوم اعصاب شناختی و برنامه‌ریز شهری می‌شود. این مشاغل معمولاً در مراکز تحقیقاتی، شرکت‌های فناوری و سازمان‌های پیشرفته وجود دارند.</p>
+          `;
+          // ترکیبی از رشته‌های مختلف
+          recommendedCourses = [
+            ...courses.technical.slice(0, 2),
+            ...courses.social.slice(0, 1),
+            ...courses.art.slice(0, 1),
+            ...courses.science.slice(0, 1)
+          ].sort(() => Math.random() - 0.5).slice(0, 4);
+      }
+      
+      document.getElementById('resultDescription').innerHTML = description;
+      
+      // نمایش رشته‌های پیشنهادی
+      let coursesHTML = '';
+      recommendedCourses.forEach(course => {
+        coursesHTML += `
+          <div class="course-card">
+            <div class="course-card-header">
+              <i class="${course.icon}"></i> ${course.title}
+            </div>
+            <div class="course-card-body">
+              <p>${course.description}</p>
+            </div>
+            <div class="course-card-footer">
+              <div class="course-tags">
+                ${course.tags.map(tag => `<span class="course-tag">${tag}</span>`).join('')}
+              </div>
+              <button class="course-detail-btn" onclick="showCourseDetail('${course.id}')">
+                جزئیات <i class="fas fa-info-circle"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      });
+      
+      document.getElementById('coursesContainer').innerHTML = coursesHTML;
+    }
+
+    // نمایش جزئیات یک رشته خاص
+    function showCourseDetail(courseId) {
+      // یافتن رشته در بین تمامی دسته‌ها
+      let course = null;
+      for (const field in courses) {
+        const found = courses[field].find(c => c.id === courseId);
+        if (found) {
+          course = found;
+          break;
+        }
+      }
+      
+      if (!course) return;
+      
+      // ایجاد محتوای جزئیات
+      const modalContent = document.getElementById('modalContent');
+      modalContent.innerHTML = `
+        <div style="text-align: right; direction: rtl;">
+          <h3 style="color: var(--primary-color); margin-bottom: 1rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem;">
+            <i class="${course.icon}"></i> ${course.title}
+          </h3>
+          <p style="margin-bottom: 1.5rem;">${course.description}</p>
+          
+          <div class="modal-section">
+            <h4 class="modal-section-title"><i class="fas fa-user-check"></i> ویژگی‌های شخصیتی متناسب</h4>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+              ${course.personalityMatch.map(trait => `
+                <span style="background: linear-gradient(135deg, var(--primary-color), var(--accent-color)); color: white; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.9rem;">
+                  ${trait}
+                </span>
+              `).join('')}
+            </div>
+          </div>
+          
+          <div class="modal-section">
+            <h4 class="modal-section-title"><i class="fas fa-code-branch"></i> گرایش‌های اصلی</h4>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+              ${course.branches.map(branch => `
+                <span style="background: var(--primary-color); color: white; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.9rem;">
+                  ${branch}
+                </span>
+              `).join('')}
+            </div>
+          </div>
+          
+          <div class="modal-section">
+            <h4 class="modal-section-title"><i class="fas fa-briefcase"></i> فرصت‌های شغلی</h4>
+            <p>${course.jobProspects}</p>
+          </div>
+          
+          <div class="modal-section">
+            <h4 class="modal-section-title"><i class="fas fa-money-bill-wave"></i> درآمد تقریبی</h4>
+            <p>${course.salary}</p>
+          </div>
+          
+          <div class="modal-section">
+            <h4 class="modal-section-title"><i class="fas fa-cogs"></i> مهارت‌های مورد نیاز</h4>
+            <div class="skills-list">
+              ${course.skills.map(skill => `
+                <div class="skill-item">${skill}</div>
+              `).join('')}
+            </div>
+          </div>
+          
+          <div class="modal-section">
+            <h4 class="modal-section-title"><i class="fas fa-university"></i> دانشگاه‌های برتر</h4>
+            <div class="university-list">
+              ${course.topUniversities.map(univ => `
+                <div class="university-item">${univ}</div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // نمایش مودال
+      document.getElementById('courseModal').classList.add('active');
+    }
+
+    // بستن مودال
+    function closeModal() {
+      document.getElementById('courseModal').classList.remove('active');
+    }
+
+    // شروع مجدد آزمون
+    function restartQuiz() {
+      currentQuestion = 0;
+      answers = {};
+      personalityType = "";
+      personalityTraits = [];
+      personalityDescription = "";
+      domainScores = {
+        technical: 0,
+        science: 0,
+        social: 0,
+        art: 0,
+        medical: 0
+      };
+      
+      document.getElementById('result').style.display = 'none';
+      document.getElementById('quizForm').style.display = 'block';
+      
+      renderQuestion();
+      updateProgressBar();
+      
+      // اسکرول به بالای صفحه
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // بستن مودال با کلیک خارج از آن
+    window.addEventListener('click', function(event) {
+      const modal = document.getElementById('courseModal');
+      if (event.target === modal) {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>
